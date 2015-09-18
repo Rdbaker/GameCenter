@@ -10,21 +10,21 @@ from gamecenter.settings import DevConfig, ProdConfig
 from gamecenter.database import db
 
 if os.environ.get("GAMECENTER_ENV") == 'prod':
-    app = create_app(ProdConfig)
+    application = create_app(ProdConfig)
 else:
-    app = create_app(DevConfig)
+    application = create_app(DevConfig)
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TEST_PATH = os.path.join(HERE, 'tests')
 
-manager = Manager(app)
+manager = Manager(application)
 
 
 def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default.
     """
-    return {'app': app, 'db': db}
+    return {'app': application, 'db': db}
 
 
 @manager.command
