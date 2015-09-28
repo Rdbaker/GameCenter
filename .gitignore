@@ -44,3 +44,6 @@ docs/_build
 
 # Virtualenvs
 env/
+
+# ignore the compiled slate files
+gamecenter/static/docs

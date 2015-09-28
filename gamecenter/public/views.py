@@ -5,12 +5,13 @@ from flask import (Blueprint, render_template)
 blueprint = Blueprint('public', __name__, static_folder="../static")
 
 
-@blueprint.route("/", methods=["GET"])
+@blueprint.route("/")
 def home():
-    # Handle logging in
+    """Return the home page"""
     return render_template("public/home.html")
 
 
 @blueprint.route("/about/")
 def about():
+    """Return the about page"""
     return render_template("public/about.html")

@@ -10,7 +10,8 @@ from gamecenter.extensions import (
     migrate,
     debug_toolbar,
 )
-from gamecenter import public
+from gamecenter.public import views as public
+from gamecenter.api import views as api
 
 
 def create_app(config_object=ProdConfig):
@@ -37,7 +38,8 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    app.register_blueprint(public.views.blueprint)
+    app.register_blueprint(public.blueprint)
+    app.register_blueprint(api.blueprint)
     return None
 
 
