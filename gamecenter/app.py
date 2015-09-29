@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 
+from gamecenter.core.utils import InvalidUsage
 from gamecenter.settings import ProdConfig
 from gamecenter.assets import assets
+from gamecenter.core.models import DB as db
 from gamecenter.extensions import (
     cache,
-    db,
     migrate,
     debug_toolbar,
 )
 from gamecenter.public import views as public
 from gamecenter.api import views as api
+from gamecenter.core import views as core
 
 
 def create_app(config_object=ProdConfig):
@@ -23,8 +25,14 @@ def create_app(config_object=ProdConfig):
     app = Flask(__name__)
     app.config.from_object(config_object)
     register_extensions(app)
-    register_blueprints(app)
     register_errorhandlers(app)
+    register_blueprints(app)
+
+    @app.errorhandler(InvalidUsage)
+    def handle_invalid_usage(error):
+        """A handler for any endpoint that raises an InvalidUsage exception"""
+        return jsonify(error.to_dict()), error.status_code
+
     return app
 
 
@@ -40,6 +48,7 @@ def register_extensions(app):
 def register_blueprints(app):
     app.register_blueprint(public.blueprint)
     app.register_blueprint(api.blueprint)
+    app.register_blueprint(core.blueprint)
     return None
 
 

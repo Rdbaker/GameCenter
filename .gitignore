@@ -47,3 +47,5 @@ env/
 
 # ignore the compiled slate files
 gamecenter/static/docs
+
+postgres

@@ -30,7 +30,7 @@ You will see a pretty welcome screen.
 Once you have installed your DBMS, run the following to create your app's database tables and perform the initial migration:
 
 ::
-
+    createuser localuser
     python manage.py db init
     python manage.py db migrate
     python manage.py db upgrade
