@@ -5,7 +5,7 @@ os_env = os.environ
 
 
 class Config(object):
-    # TODO: Change me
+    # TODO: Change this to be a better secret key (if we even need one)
     SECRET_KEY = os_env.get('GAMECENTER_SECRET', 'secret-key')
     APP_DIR = os.path.abspath(os.path.dirname(__file__))
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
@@ -20,7 +20,7 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
-    # TODO: Change me
+    # TODO: Change this to an os_env.get type thing to hide our DB URI
     SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/example'
     DEBUG_TB_ENABLED = False
 
