@@ -30,7 +30,7 @@ You will see a pretty welcome screen.
 Once you have installed your DBMS, run the following to create your app's database tables and perform the initial migration:
 
 ::
-
+    createuser localuser
     python manage.py db init
     python manage.py db migrate
     python manage.py db upgrade
@@ -78,3 +78,24 @@ This will generate a new migration script. Then run:
 To apply the migration.
 
 For a full migration command reference, run ``python manage.py db --help``.
+
+
+Docs
+----
+
+To build the docs:
+
+move to the `slate` directory:
+::
+
+    cd slate/
+
+then build the docs with middleman:
+::
+
+    bundle exec middleman build
+
+you may first need to install slate's dependencies:
+::
+
+    cd slate/ && bundle install

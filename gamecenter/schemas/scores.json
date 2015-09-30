@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "integer"
+    },
+    "score": {
+      "type": "number"
+    },
+    "tag": {
+      "type": "string"
+    }
+  },
+  "required": ["user_id", "score"]
+}

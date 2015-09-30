@@ -6,5 +6,8 @@ pytest>=2.6.3
 webtest
 factory-boy==2.5.1
 
+# verify json schema in our tests
+Flask-JsonSchema==0.1.1
+
 # Management script
 Flask-Script
