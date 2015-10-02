@@ -4,7 +4,9 @@
 # Testing
 pytest>=2.6.3
 webtest
+mock==1.3.0
 factory-boy==2.5.1
+Flask-Testing==0.4.2
 
 # verify json schema in our tests
 Flask-JsonSchema==0.1.1

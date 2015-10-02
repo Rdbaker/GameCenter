@@ -1,3 +1,4 @@
+"""
 # -*- coding: utf-8 -*-
 from factory import Sequence, PostGenerationMethodCall
 from factory.alchemy import SQLAlchemyModelFactory
@@ -21,3 +22,4 @@ class UserFactory(BaseFactory):
 
     class Meta:
         model = User
+"""

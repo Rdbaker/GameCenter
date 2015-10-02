@@ -42,6 +42,6 @@ class DevConfig(Config):
 class TestConfig(Config):
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localuser:localpassword@localhost/gamecenter_test'
     BCRYPT_LOG_ROUNDS = 1  # For faster tests
     WTF_CSRF_ENABLED = False  # Allows form testing
