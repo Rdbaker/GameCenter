@@ -212,7 +212,7 @@ Parameter | Required | Type | Default | Description
 --------- | -------- | ---- | ------- | -----------
 `user_id`   | yes    | Integer |      | The ID of the user to create a leaderboard entry for.
 `score`     | yes    | Integer |      | The score value for the entry in the leaderboard.
-`radius`    | yes    | Integer | `4`  | The number of scores to return above and below the user's score.
+`radius`    | yes    | Integer |      | The number of scores to return above and below the user's score.
 `sort`    | no       | String | `"descending"` | The order the results will be returned, either `"ascending"` or `"descending"`.
 `tag`       | no     | String |       | An identification tag for a leaderboard entry.
 `filter_tag` | no    | String |       | A leaderboard tag to filter on. Must be either empty or the same as `tag`.
