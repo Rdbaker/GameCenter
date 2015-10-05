@@ -1,24 +1,29 @@
 ---
-title: API Reference
+title: Game Center Leaderboard API Reference
 
 language_tabs:
-  - java
-  - shell
+  - java: Java
+  - shell: cURL
 
 toc_footers:
   - <a href='/'>Sign Up for a Developer Key</a>
+  - <a href='http://github.com/rdbaker/GameCenter'>API code on GitHub</a>
+  - <a href='http://github.com/rdbaker/GameCenterJava'>Java Client Library</a>
   - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
-  - leaderboardget
-  - leaderboardpost
+  - intro
+  - leaderboard
   - errors
 
 search: true
 ---
 
-# Introduction
 
-Welcome to the Game Center API! You can use our API to access Game Center API endpoints, which can get information on leaderboards.
-
-We have language bindings in Shell and Java! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+#TODO
+- Update the endpoint so they arent all at the same URL.
+- Change the Java code to match the client, when that's done.
+- Factor out the imports in the example java code into the intro somewhere.
+  Maybe do the same with cURL auth code with env vars?
+- Separate GET params and POST params in examples. Possibly different tables in
+  the description.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Defines fixtures available to all tests."""
+"""Defines fixtures available to all tests.
 import pytest
 from webtest import TestApp
 
@@ -21,7 +21,7 @@ def app():
 
 @pytest.fixture(scope='function')
 def testapp(app):
-    """A Webtest app."""
+    A Webtest app.
     return TestApp(app)
 
 
@@ -35,7 +35,7 @@ def db(app):
 
     _db.drop_all()
 
-"""Here's an example of how to tes up a test fixture
+Here's an example of how to test up a test fixture
 @pytest.fixture
 def user(db):
     user = UserFactory(password='myprecious')
