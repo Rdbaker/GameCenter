@@ -46,7 +46,7 @@ Parameter | Required | Type | Default | Description
 `sort`    | no       | String | `"descending"` | The order the results will be returned, either `"ascending"` or `"descending"`.
 `tag`     | no       | String |       | A leaderboard tag to filter the results with.
 `start_date` | no    | Date String | The beginning of time. | The start date for a date range filter.
-`end_date` | no      | Date String | Now. | The end date for a date range filter.
+`end_date` | no      | Date String | Now | The end date for a date range filter.  Must be after `start_date`.
 
 
 
@@ -96,16 +96,16 @@ curl "https://tmwild.com/api/leaderboards?user_id=1"
 ]
 ```
 
-This retrieves a list of a single user's scores in descending order of time created.
+This retrieves a list of a user's scores in descending order of time created.
 
 ### Query Parameters
 
 Parameter | Required | Type | Default | Description
 --------- | -------- | ---- | ------- | -----------
-`user_id` | yes      | Integer |      | The ID for the user to query.
+`user_id` | yes      | Integer |      | The ID for the user to query. To query multiple users at once, comma separate `user_id`s.
 `tag`     | no       | String |       | A leaderboard tag to filter on.
 `start_date` | no    | Date String | The beginning of time. | The start date for a date range filter.
-`end_date` | no      | Date String | Now | The end date for a date range filter.
+`end_date` | no      | Date String | Now | The end date for a date range filter.  Must be after `start_date`.
 
 
 
@@ -212,7 +212,7 @@ Parameter | Required | Type | Default | Description
 --------- | -------- | ---- | ------- | -----------
 `user_id`   | yes    | Integer |      | The ID of the user to create a leaderboard entry for.
 `score`     | yes    | Integer |      | The score value for the entry in the leaderboard.
+`tag`       | no     | String |       | An identification tag for a leaderboard entry.
 `radius`    | yes    | Integer |      | The number of scores to return above and below the user's score.
 `sort`    | no       | String | `"descending"` | The order the results will be returned, either `"ascending"` or `"descending"`.
-`tag`       | no     | String |       | An identification tag for a leaderboard entry.
 `filter_tag` | no    | String |       | A leaderboard tag to filter on. Must be either empty or the same as `tag`.

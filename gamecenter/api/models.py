@@ -16,3 +16,4 @@ class Score(Base):
     user_id = db.Column(db.Integer, index=True, unique=True, nullable=False)
     score = db.Column(db.Integer, nullable=False)
     tag = db.Column(db.String, index=True)
+    created_at = db.Column(db.DateTime, nullable=False)
