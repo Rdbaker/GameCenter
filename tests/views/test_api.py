@@ -34,6 +34,7 @@ class APIViewsTest(BaseTestCase):
 
     # **********  meta  *********
     def test_meta(self):
+        """Is the meta object being generated?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
 
@@ -46,6 +47,7 @@ class APIViewsTest(BaseTestCase):
         })
 
     def test_prev(self):
+        """Does prev point to the previous page?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/top", data={"offset": 7, "page_size": 4})
@@ -55,6 +57,7 @@ class APIViewsTest(BaseTestCase):
         )
 
     def test_prev_boundary(self):
+        """Does prev go below the first object?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/top", data={"offset": 3, "page_size": 5})
@@ -64,12 +67,14 @@ class APIViewsTest(BaseTestCase):
         )
 
     def test_next_boundary(self):
+        """Does next go past the last object?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/top", data={"offset": 7, "page_size": 5})
         self.assertFalse("next" in json.loads(r.data)["meta"]["links"])
 
     def test_paging_limit(self):
+        """Is there one object returned when we ask for 5 items, starting with the last?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/top", data={"offset": 10, "page_size": 5})
@@ -78,6 +83,7 @@ class APIViewsTest(BaseTestCase):
     # **********  top  *********
 
     def test_top_basic(self):
+        """Test basic usage of /top"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/top", data={"page_size": 2})
@@ -89,6 +95,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(o2["score"], 55)
 
     def test_top_tag_filter(self):
+        """Does the tag filter work for /top?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/top", data={"page_size": 2, "tag": "level1"})
@@ -100,6 +107,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(o2["score"], 33)
 
     def test_top_ascending(self):
+        """Does the sort work for /top?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/top", data={"page_size": 2, "sort": "ascending"})
@@ -110,6 +118,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(o2["score"], 21)
 
     def test_top_date_filter(self):
+        """Does the date filter work for /top?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/top", data={
@@ -123,6 +132,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(o1["user_id"], 5)
 
     def test_top_dates_misordered(self):
+        """Does /top error when the dates given are out of order?"""
         r = self.client.get("/api/top", data={
             "start_date": "2015-05-20T00:16:00",
             "end_date": "2015-05-01T12:34:56",
@@ -132,6 +142,7 @@ class APIViewsTest(BaseTestCase):
     # **********  user_id  *********
 
     def test_user_id_basic(self):
+        """Test basic usage of /user_id"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/user_id", data={
@@ -144,6 +155,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(o1["score"], 55)
 
     def test_user_id_many_users(self):
+        """Test multiple users requested for /user_id"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/user_id", data={
@@ -157,10 +169,12 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(o3["user_id"], 4)
 
     def test_user_id_no_user_id(self):
+        """Does /user_id error when not given a user_id?"""
         r = self.client.get("/api/user_id")
         self.assertEqual(r.status_code, 400)
 
     def test_user_id_dates_misordered(self):
+        """Does /user_id error when the dates are out of order?"""
         r = self.client.get("/api/user_id", data={
             "user_id": 5,
             "start_date": "2015-05-20T00:16:00",
@@ -169,6 +183,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(r.status_code, 400)
 
     def test_user_id_tag_filter(self):
+        """Does the tag filter work on /user_id?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/user_id", data={
@@ -182,6 +197,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(o2["score"], 31)
 
     def test_user_id_date_filter(self):
+        """Does the date filter work on /user_id?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/user_id", data={
@@ -197,6 +213,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(o2["score"], 22)
 
     def test_user_id_dates_descending(self):
+        """Does sort work on /user_id?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.get("/api/user_id", data={
@@ -210,18 +227,21 @@ class APIViewsTest(BaseTestCase):
     # **********  add_score  *********
 
     def test_add_score_no_user_id(self):
+        """Does /add_score error if no user_id is given?"""
         r = self.client.post("/api/add_score", data={
             "score": 99,
         })
         self.assertEqual(r.status_code, 400)
 
     def test_add_score_no_score(self):
+        """Does /add_score error if no score is given?"""
         r = self.client.post("/api/add_score", data={
             "user_id": 5,
         })
         self.assertEqual(r.status_code, 400)
 
     def test_add_score_basic(self):
+        """Test basic /add_score usage"""
         r = self.client.post("/api/add_score", data={
             "user_id": 11,
             "score": 11,
@@ -237,6 +257,7 @@ class APIViewsTest(BaseTestCase):
 
     # **********  add_score_and_list  *********
     def test_add_and_list_basic(self):
+        """Test basic /add_score_and_lsit usage"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.post("/api/add_score_and_list", data={
@@ -258,6 +279,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(s3["score"], 22)
 
     def test_add_and_list_no_user_id(self):
+        """Does /add_score_and_list error if no user_id is given?"""
         r = self.client.post("/api/add_score_and_list", data={
             "score": 11,
             "radius": 1,
@@ -265,6 +287,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(r.status_code, 400)
 
     def test_add_and_list_no_score(self):
+        """Does /add_score_and_list error if no score is given?"""
         r = self.client.post("/api/add_score_and_list", data={
             "user_id": 11,
             "radius": 1,
@@ -272,6 +295,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(r.status_code, 400)
 
     def test_add_and_list_no_radius(self):
+        """Does /add_score_and_list error if no radius is given?"""
         r = self.client.post("/api/add_score_and_list", data={
             "user_id": 11,
             "score": 11,
@@ -279,6 +303,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(r.status_code, 400)
 
     def test_add_and_list_ascending(self):
+        """Does sort work on /add_score_and_list?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.post("/api/add_score_and_list", data={
@@ -301,6 +326,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(s3["score"], 31)
 
     def test_add_and_list_tag_filter(self):
+        """Does tag filter work on /add_score_and_list?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
         r = self.client.post("/api/add_score_and_list", data={
