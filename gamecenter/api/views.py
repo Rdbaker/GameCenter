@@ -23,6 +23,12 @@ def leaderboards_controller():
         return create_entry()
 
 
+@blueprint.route('/top', methods=['GET'])
+def top():
+    return jsonify({"meta": {"total": 10, "links":
+                             {"next": "https://tmwild.com/api/top?offset=6&page_size=5"}}})
+
+
 def get_entries():
     """Get the leaderboard entries for a user"""
     user_id = request.args.get('user_id')

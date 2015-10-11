@@ -13,6 +13,7 @@ class Score(Base):
     :param string tag: An identifiable tag for this.
     """
     __tablename__ = "scores"
-    user_id = db.Column(db.Integer, index=True, unique=True, nullable=False)
+    user_id = db.Column(db.Integer, index=True, unique=False, nullable=False)
     score = db.Column(db.Integer, nullable=False)
     tag = db.Column(db.String, index=True)
+    created_at = db.Column(db.DateTime, nullable=False)
