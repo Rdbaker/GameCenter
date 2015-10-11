@@ -13,7 +13,7 @@ ArrayList<Score> scores = client.getScores();
 ```shell
 curl "https://tmwild.com/api/leaderboards"
   -X GET
-  -H "Authorization: myAPIKey"
+  -H "Authorization: Bearer myAPIKey"
 ```
 
 > Example Response:
@@ -65,7 +65,7 @@ ArrayList<Score> scores = client.getUserScores(userId);
 ```shell
 curl "https://tmwild.com/api/leaderboards?user_id=1"
   -X GET
-  -H "Authorization: myAPIKey"
+  -H "Authorization: Bearer myAPIKey"
 ```
 
 > Example Response:
@@ -128,7 +128,7 @@ Score s = client.newScore(user_id, score, tag);
 ```shell
 curl "https://tmwild.com/api/leaderboards?user_id=1&score=220&tag=level two"
   -X POST
-  -H "Authorization: myAPIKey"
+  -H "Authorization: Bearer myAPIKey"
 ```
 
 > Example Response:
@@ -175,7 +175,7 @@ ArrayList<Score> scores = client.newScoreAndList(user_id, score, tag, radius);
 ```shell
 curl "https://tmwild.com/api/leaderboards?user_id=1&score=220&tag=level two&radius=1"
   -X POST
-  -H "Authorization: myAPIKey"
+  -H "Authorization: Bearer myAPIKey"
 ```
 
 > Example Response:

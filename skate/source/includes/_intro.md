@@ -52,6 +52,14 @@ Meta is information about the response itself. See the meta section for more
 info. TODO link. All example responses in the rest of this document will show
 the `data` object and not the full response object.
 
+##API Key
+```shell
+curl -H "Authorization: Bearer $TOKEN" "https://tmwild.com/api/leaderboards"
+```
+Each request must be made with a valid API Key. You must send a bearer
+authorization header with your request. The Java client handles this for you.
+
+
 ##Meta
 
 > Example meta object:
