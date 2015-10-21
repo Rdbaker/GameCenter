@@ -12,19 +12,24 @@ URL_PREFIX = "https://tmwild.com/api"
 class APIViewsTest(BaseTestCase):
     valid_key = "valid_key"
     auth_header = {"Authorization": "Bearer " + valid_key}
-    starting_data = [  # don't modify this list
-        Score(created_at=datetime(2015, 4, 19), user_id=1, score=21),
-        Score(created_at=datetime(2015, 4, 20), user_id=1, score=31, tag="fun"),
-        Score(created_at=datetime(2015, 4, 21), user_id=1, score=41, tag="fun"),
-        Score(created_at=datetime(2015, 4, 21), user_id=2, score=12),
-        Score(created_at=datetime(2015, 4, 21), user_id=2, score=22),
-        Score(created_at=datetime(2015, 4, 22), user_id=2, score=32),
-        Score(created_at=datetime(2015, 4, 22), user_id=3, score=33, tag="level1"),
-        Score(created_at=datetime(2015, 4, 22), user_id=4, score=44, tag="level1"),
-        Score(created_at=datetime(2015, 5, 10), user_id=5, score=55),
-        Score(created_at=datetime(2015, 6, 10), user_id=6, score=66),
-        Game(game_id=1, api_key=valid_key),
+    starting_games = [
+        Game(api_key=valid_key),
+        Game(api_key="some_other_valid_key"),
     ]
+    starting_scores = [  # don't modify this list
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 19), user_id=1, score=21),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 20), user_id=1, score=31, tag="fun"),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 21), user_id=1, score=41, tag="fun"),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 21), user_id=2, score=12),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 21), user_id=2, score=22),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 22), user_id=2, score=32),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 22), user_id=3, score=33, tag="level1"),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 22), user_id=4, score=44, tag="level1"),
+        Score(game=starting_games[0], created_at=datetime(2015, 5, 10), user_id=5, score=55),
+        Score(game=starting_games[0], created_at=datetime(2015, 6, 10), user_id=6, score=66),
+        Score(game=starting_games[1], created_at=datetime(2015, 4, 20), user_id=11, score=26),
+    ]
+    starting_data = starting_games + starting_scores
 
     def setUp(self):
         self.app = self.create_app()
@@ -370,3 +375,13 @@ class APIViewsTest(BaseTestCase):
         """Is there an error when no headers are sent?"""
         r = self.client.get("/api/top")
         self.assertEqual(r.status_code, 401)
+
+    # ********** api_key creation **********
+    def test_api_key_create_basic(self):
+        """Can you create an api token and get it back?"""
+        DB.session.add_all(self.starting_data)
+        DB.session.commit()
+        r = self.client.get("/api/signup")
+        key = json.loads(r.data)["data"]["api_key"]
+        self.assertIsNotNone(key)
+        self.assertIsNotNone(Game.query.filter(Game.api_key == key).first())

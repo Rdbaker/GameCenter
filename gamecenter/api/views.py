@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """API section."""
-import json
 import functools
+import json
+import random
+import string
 
 from flask import jsonify, request, g
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -28,8 +30,24 @@ def handle_api_key(f):
             g.game = game
             return f(*args, **kwargs)
         else:
+            # todo raise AuthenticationError("Invalid api key")
             return "Unable to authenticate you.", 401
     return decorated_function
+
+
+@blueprint.route('/signup', methods=['GET'])
+def signup():
+    chars = string.ascii_uppercase + string.digits
+    length = 32
+
+    key = ''.join(random.choice(chars) for _ in range(length))
+    while Game.query.filter_by(api_key=key).first():
+        key = ''.join(random.choice(chars) for _ in range(length))
+
+    game = Game(api_key=key)
+    DB.session.add(game)
+    DB.session.commit()
+    return jsonify({"data": {"api_key": key}})
 
 
 @blueprint.route('/leaderboards', methods=['GET', 'POST'])
