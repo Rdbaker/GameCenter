@@ -30,8 +30,7 @@ def handle_api_key(f):
             g.game = game
             return f(*args, **kwargs)
         else:
-            # todo raise AuthenticationError("Invalid api key")
-            return "Unable to authenticate you.", 401
+            raise InvalidUsage("Unable to authenticate you.", 401)
     return decorated_function
 
 
