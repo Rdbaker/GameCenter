@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 """API section."""
+import functools
 import json
+import random
+import string
 
-from flask import jsonify, request
+from flask import jsonify, request, g
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import blueprint
-from gamecenter.api.models import Score
+from gamecenter.api.models import Score, Game
 from gamecenter.api.schema import ScoreSchema
 from gamecenter.core.models import DB
 from gamecenter.core.utils import InvalidUsage
@@ -20,6 +23,37 @@ SESSION = scoped_session(sessionmaker())
 SCORESCHEMA = ScoreSchema()
 
 
+def handle_api_key(f):
+    @functools.wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "Authorization" in request.headers:
+            api_key = request.headers["Authorization"][7:]  # from the string form "Bearer <api_key>"
+        else:
+            api_key = ""
+        game = Game.query.filter(Game.api_key == api_key).first()
+        if game:
+            g.game = game
+            return f(*args, **kwargs)
+        else:
+            raise InvalidUsage("Unable to authenticate you.", 401)
+    return decorated_function
+
+
+@blueprint.route('/signup', methods=['GET'])
+def signup():
+    chars = string.ascii_uppercase + string.digits
+    length = 32
+
+    key = ''.join(random.choice(chars) for _ in range(length))
+    while Game.query.filter_by(api_key=key).first():
+        key = ''.join(random.choice(chars) for _ in range(length))
+
+    game = Game(api_key=key)
+    DB.session.add(game)
+    DB.session.commit()
+    return jsonify({"data": {"api_key": key}})
+
+
 @blueprint.route('/leaderboards', methods=['GET', 'POST'])
 @get_request_args
 def leaderboards_controller(args):
@@ -30,6 +64,7 @@ def leaderboards_controller(args):
 
 
 @blueprint.route('/top', methods=['GET'])
+@handle_api_key
 def top():
     return jsonify({"meta": {"total": 10, "links":
                              {"next": "https://tmwild.com/api/top?offset=6&page_size=5"}}})
@@ -66,7 +101,7 @@ def create_entry():
 def user_and_radius(user_id, radius):
     # TODO: make this work
     return scores_from_query(
-            Score.query.filter(Score.user_id == user_id).all())
+        Score.query.filter(Score.user_id == user_id).all())
 
 
 def scores_from_query(result_set, args):

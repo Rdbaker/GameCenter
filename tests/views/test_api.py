@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 
-from gamecenter.api.models import Score
+from gamecenter.api.models import Score, Game
 from gamecenter.core.utils_test import BaseTestCase
 from gamecenter.core.models import DB
 
@@ -10,18 +10,26 @@ URL_PREFIX = "https://tmwild.com/api"
 
 
 class APIViewsTest(BaseTestCase):
-    starting_data = [  # don't modify this list
-        Score(created_at=datetime(2015, 4, 19), user_id=1, score=21),
-        Score(created_at=datetime(2015, 4, 20), user_id=1, score=31, tag="fun"),
-        Score(created_at=datetime(2015, 4, 21), user_id=1, score=41, tag="fun"),
-        Score(created_at=datetime(2015, 4, 21), user_id=2, score=12),
-        Score(created_at=datetime(2015, 4, 21), user_id=2, score=22),
-        Score(created_at=datetime(2015, 4, 22), user_id=2, score=32),
-        Score(created_at=datetime(2015, 4, 22), user_id=3, score=33, tag="level1"),
-        Score(created_at=datetime(2015, 4, 22), user_id=4, score=44, tag="level1"),
-        Score(created_at=datetime(2015, 5, 10), user_id=5, score=55),
-        Score(created_at=datetime(2015, 6, 10), user_id=6, score=66),
+    valid_key = "valid_key"
+    auth_header = {"Authorization": "Bearer " + valid_key}
+    starting_games = [
+        Game(api_key=valid_key),
+        Game(api_key="some_other_valid_key"),
     ]
+    starting_scores = [  # don't modify this list
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 19), user_id=1, score=21),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 20), user_id=1, score=31, tag="fun"),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 21), user_id=1, score=41, tag="fun"),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 21), user_id=2, score=12),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 21), user_id=2, score=22),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 22), user_id=2, score=32),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 22), user_id=3, score=33, tag="level1"),
+        Score(game=starting_games[0], created_at=datetime(2015, 4, 22), user_id=4, score=44, tag="level1"),
+        Score(game=starting_games[0], created_at=datetime(2015, 5, 10), user_id=5, score=55),
+        Score(game=starting_games[0], created_at=datetime(2015, 6, 10), user_id=6, score=66),
+        Score(game=starting_games[1], created_at=datetime(2015, 4, 20), user_id=11, score=26),
+    ]
+    starting_data = starting_games + starting_scores
 
     def setUp(self):
         self.app = self.create_app()
@@ -38,7 +46,7 @@ class APIViewsTest(BaseTestCase):
         DB.session.add_all(self.starting_data)
         DB.session.commit()
 
-        r = self.client.get("/api/top")
+        r = self.client.get("/api/top", headers=self.auth_header)
         self.assertEqual(json.loads(r.data)["meta"], {
             "total": 10,
             "links": {
@@ -50,7 +58,7 @@ class APIViewsTest(BaseTestCase):
         """Does prev point to the previous page?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/top", data={"offset": 7, "page_size": 4})
+        r = self.client.get("/api/top", data={"offset": 7, "page_size": 4}, headers=self.auth_header)
         self.assertEqual(
             json.loads(r.data)["meta"]["links"]["prev"],
             URL_PREFIX + "/top?offset=3&page_size=4",
@@ -60,7 +68,7 @@ class APIViewsTest(BaseTestCase):
         """Does prev go below the first object?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/top", data={"offset": 3, "page_size": 5})
+        r = self.client.get("/api/top", data={"offset": 3, "page_size": 5}, headers=self.auth_header)
         self.assertEqual(
             json.loads(r.data)["meta"]["links"]["prev"],
             URL_PREFIX + "/top?offset=1&page_size=5",
@@ -70,14 +78,14 @@ class APIViewsTest(BaseTestCase):
         """Does next go past the last object?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/top", data={"offset": 7, "page_size": 5})
+        r = self.client.get("/api/top", data={"offset": 7, "page_size": 5}, headers=self.auth_header)
         self.assertFalse("next" in json.loads(r.data)["meta"]["links"])
 
     def test_paging_limit(self):
         """Is there one object returned when we ask for 5 items, starting with the last?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/top", data={"offset": 10, "page_size": 5})
+        r = self.client.get("/api/top", data={"offset": 10, "page_size": 5}, headers=self.auth_header)
         self.assertEqual(len(json.loads(r.data)["data"]), 1)
 
     # **********  top  *********
@@ -86,7 +94,7 @@ class APIViewsTest(BaseTestCase):
         """Test basic usage of /top"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/top", data={"page_size": 2})
+        r = self.client.get("/api/top", data={"page_size": 2}, headers=self.auth_header)
         self.assertEqual(json.loads(r.data)["meta"]["total"], 10)
         o1, o2 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1]
         self.assertEqual(o1["user_id"], 6)
@@ -98,7 +106,7 @@ class APIViewsTest(BaseTestCase):
         """Does the tag filter work for /top?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/top", data={"page_size": 2, "tag": "level1"})
+        r = self.client.get("/api/top", data={"page_size": 2, "tag": "level1"}, headers=self.auth_header)
         self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
         o1, o2 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1]
         self.assertEqual(o1["user_id"], 4)
@@ -110,7 +118,7 @@ class APIViewsTest(BaseTestCase):
         """Does the sort work for /top?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/top", data={"page_size": 2, "sort": "ascending"})
+        r = self.client.get("/api/top", data={"page_size": 2, "sort": "ascending"}, headers=self.auth_header)
         o1, o2 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1]
         self.assertEqual(o1["user_id"], 2)
         self.assertEqual(o1["score"], 12)
@@ -121,7 +129,7 @@ class APIViewsTest(BaseTestCase):
         """Does the date filter work for /top?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/top", data={
+        r = self.client.get("/api/top", headers=self.auth_header, data={
             "page_size": 2,
             "sort": "ascending",
             "start_date": "2015-05-01T12:34:56",
@@ -133,7 +141,7 @@ class APIViewsTest(BaseTestCase):
 
     def test_top_dates_misordered(self):
         """Does /top error when the dates given are out of order?"""
-        r = self.client.get("/api/top", data={
+        r = self.client.get("/api/top", headers=self.auth_header, data={
             "start_date": "2015-05-20T00:16:00",
             "end_date": "2015-05-01T12:34:56",
         })
@@ -145,7 +153,7 @@ class APIViewsTest(BaseTestCase):
         """Test basic usage of /user_id"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/user_id", data={
+        r = self.client.get("/api/user_id", headers=self.auth_header, data={
             "page_size": 2,
             "user_id": 5,
         })
@@ -158,7 +166,7 @@ class APIViewsTest(BaseTestCase):
         """Test multiple users requested for /user_id"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/user_id", data={
+        r = self.client.get("/api/user_id", headers=self.auth_header, data={
             "page_size": 2,
             "user_id": "4,5,6",
         })
@@ -170,12 +178,12 @@ class APIViewsTest(BaseTestCase):
 
     def test_user_id_no_user_id(self):
         """Does /user_id error when not given a user_id?"""
-        r = self.client.get("/api/user_id")
+        r = self.client.get("/api/user_id", headers=self.auth_header)
         self.assertEqual(r.status_code, 400)
 
     def test_user_id_dates_misordered(self):
         """Does /user_id error when the dates are out of order?"""
-        r = self.client.get("/api/user_id", data={
+        r = self.client.get("/api/user_id", headers=self.auth_header, data={
             "user_id": 5,
             "start_date": "2015-05-20T00:16:00",
             "end_date": "2015-05-01T12:34:56",
@@ -186,7 +194,7 @@ class APIViewsTest(BaseTestCase):
         """Does the tag filter work on /user_id?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/user_id", data={
+        r = self.client.get("/api/user_id", headers=self.auth_header, data={
             "user_id": 1,
         })
         self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
@@ -200,7 +208,7 @@ class APIViewsTest(BaseTestCase):
         """Does the date filter work on /user_id?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/user_id", data={
+        r = self.client.get("/api/user_id", headers=self.auth_header, data={
             "user_id": 4,
             "start_date": "2015-04-01T12:34:56",
             "end_date": "2015-04-21T23:59:59",
@@ -216,7 +224,7 @@ class APIViewsTest(BaseTestCase):
         """Does sort work on /user_id?"""
         DB.session.add_all(self.starting_data)
         DB.session.commit()
-        r = self.client.get("/api/user_id", data={
+        r = self.client.get("/api/user_id", headers=self.auth_header, data={
             "user_id": 1,
         })
         self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
@@ -249,7 +257,7 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(json.loads(r.data)["data"]["user_id"], 11)
         self.assertEqual(json.loads(r.data)["data"]["score"], 11)
 
-        r = self.client.get("/api/top")
+        r = self.client.get("/api/top", headers=self.auth_header)
         self.assertEqual(json.loads(r.data)["meta"]["total"], 1)
         score = json.loads(r.data)["data"][0]
         self.assertEqual(score["user_id"], 11)
@@ -351,3 +359,29 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(s3["score"], 33)
 
     # TODO: with every test that doesn't error, verify the json schema is full
+
+    # ********** api_key validation **********
+    def test_auth_invalid_api_key(self):
+        """Is there an error when a bad api key is given?"""
+        r = self.client.get("/api/top", headers={"Authorization": "Bearer lolIAmNotAKey"})
+        self.assertEqual(r.status_code, 401)
+
+    def test_auth_no_api_key(self):
+        """Is there an error when no api key is given in the header?"""
+        r = self.client.get("/api/top", headers={"Authorization": "Bearer"})
+        self.assertEqual(r.status_code, 401)
+
+    def test_no_key(self):
+        """Is there an error when no headers are sent?"""
+        r = self.client.get("/api/top")
+        self.assertEqual(r.status_code, 401)
+
+    # ********** api_key creation **********
+    def test_api_key_create_basic(self):
+        """Can you create an api token and get it back?"""
+        DB.session.add_all(self.starting_data)
+        DB.session.commit()
+        r = self.client.get("/api/signup")
+        key = json.loads(r.data)["data"]["api_key"]
+        self.assertIsNotNone(key)
+        self.assertIsNotNone(Game.query.filter(Game.api_key == key).first())
