@@ -108,4 +108,4 @@ section below. TODO link.
 
 ##Date Format
 All of the dates in requests and responses are to be interpretted as UTC. They
-must be in the ISO format `YYYY-MM-DDTHH:mm:ss` for example: `"1994-03-06T23:45:11"`.
+must be in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format `YYYY-MM-DDTHH:mm:ss` for example: `"1994-03-06T23:45:11"`.

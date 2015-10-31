@@ -7,6 +7,7 @@ os_env = os.environ
 class Config(object):
     # TODO: Change this to be a better secret key (if we even need one)
     SECRET_KEY = os_env.get('GAMECENTER_SECRET', 'secret-key')
+    HOST_URI = 'http://127.0.0.1:5000'
     APP_DIR = os.path.abspath(os.path.dirname(__file__))
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     JSONSCHEMA_DIR = os.path.join(PROJECT_ROOT, 'schemas')
@@ -18,6 +19,7 @@ class Config(object):
 
 class ProdConfig(Config):
     """Production configuration."""
+    HOST_URI = 'https://tmwild.com'
     ENV = 'prod'
     DEBUG = False
     # TODO: Change this to an os_env.get type thing to hide our DB URI
