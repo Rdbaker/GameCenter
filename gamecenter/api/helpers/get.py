@@ -94,7 +94,6 @@ def valid_start_date(date):
     try:
         if date is None:
             date = DEFAULTS['start_date'].isoformat()
-            print date
         return iso8601.parse_date(date)
     except iso8601.iso8601.ParseError:
         raise InvalidUsage("The start_date argument must be a string in iso8601 date format.")
