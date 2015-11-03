@@ -63,27 +63,16 @@ def leaderboards_controller(args):
         return create_entry()
 
 
-@blueprint.route('/top', methods=['GET'])
-@handle_api_key
-def top():
-    return jsonify({"meta": {"total": 10, "links":
-                             {"next": "https://tmwild.com/api/top?offset=6&page_size=5"}}})
-
-
 def get_paginated_scores(args):
     """Get a list of paginated scores."""
     order = Score.score.desc()
     if args['sort'] == 'ascending':
         order = Score.score
+    res_set = Score.query.order_by(order).filter(construct_and_(args))
     return scores_from_query(
-        Score
-        .query
-        .order_by(order)
-        .filter(construct_and_(args))
-        .offset(args['offset'] - 1)
-        .limit(args['page_size']),
-        args
-    )
+        result_set=res_set.offset(args['offset'] - 1).limit(args['page_size']),
+        count=res_set.count(),
+        args=args)
 
 
 def create_entry():
@@ -104,6 +93,6 @@ def user_and_radius(user_id, radius):
         Score.query.filter(Score.user_id == user_id).all())
 
 
-def scores_from_query(result_set, args):
+def scores_from_query(result_set, count, args):
     res = [SCORESCHEMA.dump(score).data for score in result_set]
-    return jsonify(data=res, meta=get_meta_from_args(args))
+    return jsonify(data=res, meta=get_meta_from_args(count, args))
