@@ -3,7 +3,7 @@
 import iso8601
 from flask import request
 from datetime import datetime as dt
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 
 from gamecenter.core.utils import InvalidUsage
 from gamecenter.api.models import Score
@@ -26,7 +26,7 @@ def construct_and_(args):
     if args.get('tag') is not None:
         conditions.append(Score.tag == args['tag'])
     if args.get('user_id') is not None:
-        conditions.append(Score.user_id == args['user_id'])
+        conditions.append(or_(*[Score.user_id == u_id for u_id in args['user_id']]))
     return and_(*conditions)
 
 
@@ -35,6 +35,7 @@ def get_request_args(view_func):
     def get_args():
         """Get the arguments from a request."""
         args = {}
+        compare_dates(start=request.args.get('start_date'), end=request.args.get('end_date'))
         args['start_date'] = valid_start_date(request.args.get('start_date'))
         args['page_size'] = valid_page_size(request.args.get('page_size'))
         args['end_date'] = valid_end_date(request.args.get('end_date'))
@@ -44,6 +45,23 @@ def get_request_args(view_func):
         args['tag'] = valid_tag(request.args.get('tag'))
         return view_func(args)
     return get_args
+
+
+def compare_dates(start, end):
+    try:
+        if start is None:
+            start = DEFAULTS['start_date'].isoformat()
+        else:
+            start = iso8601.parse_date(start)
+        if end is None:
+            end = DEFAULTS['end_date'].isoformat()
+        else:
+            end = iso8601.parse_date(end)
+        if end < start:
+            raise InvalidUsage("The end_date argument must be a date after the start_date argument.")
+    except iso8601.iso8601.ParseError:
+        # This will be caught later
+        pass
 
 
 def valid_tag(tag):
@@ -56,7 +74,7 @@ def valid_user_id(user_id):
     """Returns the given user id as an integer"""
     try:
         if user_id is not None:
-            return int(user_id)
+            return [int(id) for id in user_id.split(',')]
     except TypeError:
         raise InvalidUsage("The user_id argument must be of type integer.")
 

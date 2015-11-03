@@ -3,7 +3,7 @@ import json
 
 from gamecenter.api.models import Score, Game
 from gamecenter.core.utils_test import BaseTestCase
-from gamecenter.core.models import DB
+# from gamecenter.core.models import DB
 
 
 URL_PREFIX = "https://tmwild.com/api"
@@ -34,18 +34,20 @@ class APIViewsTest(BaseTestCase):
     def setUp(self):
         self.app = self.create_app()
         self.client = self.app.test_client()
-        DB.create_all()
+        # only run the following few lines once
+        # DB.create_all()
+        # DB.session.add_all(self.starting_data)
+        # DB.session.commit()
 
     def tearDown(self):
-        DB.session.remove()
-        DB.drop_all()
+        # DB.session.close()
+        # DB.drop_all()
+        # DB.session.remove()
+        pass
 
     # **********  meta  *********
     def test_meta(self):
         """Is the meta object being generated?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-
         r = self.client.get("/api/top", headers=self.auth_header)
         self.assertEqual(json.loads(r.data)["meta"], {
             "total": 10,
@@ -56,8 +58,6 @@ class APIViewsTest(BaseTestCase):
 
     def test_prev(self):
         """Does prev point to the previous page?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
         r = self.client.get("/api/top", data={"offset": 7, "page_size": 4}, headers=self.auth_header)
         self.assertEqual(
             json.loads(r.data)["meta"]["links"]["prev"],
@@ -66,8 +66,6 @@ class APIViewsTest(BaseTestCase):
 
     def test_prev_boundary(self):
         """Does prev go below the first object?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
         r = self.client.get("/api/top", data={"offset": 3, "page_size": 5}, headers=self.auth_header)
         self.assertEqual(
             json.loads(r.data)["meta"]["links"]["prev"],
@@ -76,72 +74,62 @@ class APIViewsTest(BaseTestCase):
 
     def test_next_boundary(self):
         """Does next go past the last object?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
         r = self.client.get("/api/top", data={"offset": 7, "page_size": 5}, headers=self.auth_header)
         self.assertFalse("next" in json.loads(r.data)["meta"]["links"])
 
     def test_paging_limit(self):
         """Is there one object returned when we ask for 5 items, starting with the last?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
         r = self.client.get("/api/top", data={"offset": 10, "page_size": 5}, headers=self.auth_header)
         self.assertEqual(len(json.loads(r.data)["data"]), 1)
 
-    # **********  top  *********
+    # **********  GET /leaderboards  *********
 
-    def test_top_basic(self):
-        """Test basic usage of /top"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/top", data={"page_size": 2}, headers=self.auth_header)
-        self.assertEqual(json.loads(r.data)["meta"]["total"], 10)
+    def test_leaderboards_basic(self):
+        """Test basic usage of /leaderboards"""
+        r = self.client.get("/api/leaderboards", query_string={'page_size': 2}, headers=self.auth_header)
         o1, o2 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1]
         self.assertEqual(o1["user_id"], 6)
         self.assertEqual(o1["score"], 66)
         self.assertEqual(o2["user_id"], 5)
         self.assertEqual(o2["score"], 55)
+        self.assertEqual(json.loads(r.data)["meta"]["total"], 11)
 
-    def test_top_tag_filter(self):
-        """Does the tag filter work for /top?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/top", data={"page_size": 2, "tag": "level1"}, headers=self.auth_header)
-        self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
+    def test_leaderboard_tag_filter(self):
+        """Does the tag filter work for /leaderboards?"""
+        r = self.client.get("/api/leaderboards", query_string={"page_size": 2, "tag": "level1"},
+                            headers=self.auth_header)
         o1, o2 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1]
         self.assertEqual(o1["user_id"], 4)
         self.assertEqual(o1["score"], 44)
         self.assertEqual(o2["user_id"], 3)
         self.assertEqual(o2["score"], 33)
+        self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
 
-    def test_top_ascending(self):
-        """Does the sort work for /top?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/top", data={"page_size": 2, "sort": "ascending"}, headers=self.auth_header)
+    def test_leaderboard_ascending(self):
+        """Does the sort work for /leaderboards?"""
+        r = self.client.get("/api/leaderboards", query_string={"page_size": 2, "sort": "ascending"},
+                            headers=self.auth_header)
         o1, o2 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1]
         self.assertEqual(o1["user_id"], 2)
         self.assertEqual(o1["score"], 12)
         self.assertEqual(o2["user_id"], 1)
         self.assertEqual(o2["score"], 21)
 
-    def test_top_date_filter(self):
-        """Does the date filter work for /top?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/top", headers=self.auth_header, data={
+    def test_leaderboard_date_filter(self):
+        """Does the date filter work for /leaderboards?"""
+        r = self.client.get("/api/leaderboards", headers=self.auth_header, query_string={
             "page_size": 2,
             "sort": "ascending",
             "start_date": "2015-05-01T12:34:56",
             "end_date": "2015-05-20T00:16:00",
         })
-        self.assertEqual(json.loads(r.data)["meta"]["total"], 1)
         o1 = json.loads(r.data)["data"][0]
         self.assertEqual(o1["user_id"], 5)
+        self.assertEqual(json.loads(r.data)["meta"]["total"], 1)
 
-    def test_top_dates_misordered(self):
-        """Does /top error when the dates given are out of order?"""
-        r = self.client.get("/api/top", headers=self.auth_header, data={
+    def test_leaderboard_dates_misordered(self):
+        """Does /leaderboards error when the dates given are out of order?"""
+        r = self.client.get("/api/leaderboards", headers=self.auth_header, query_string={
             "start_date": "2015-05-20T00:16:00",
             "end_date": "2015-05-01T12:34:56",
         })
@@ -150,40 +138,32 @@ class APIViewsTest(BaseTestCase):
     # **********  user_id  *********
 
     def test_user_id_basic(self):
-        """Test basic usage of /user_id"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/user_id", headers=self.auth_header, data={
+        """Test basic usage of /leaderboards with a user_id"""
+        r = self.client.get("/api/leaderboards", headers=self.auth_header, query_string={
             "page_size": 2,
             "user_id": 5,
         })
-        self.assertEqual(json.loads(r.data)["meta"]["total"], 1)
         o1 = json.loads(r.data)["data"][0]
         self.assertEqual(o1["user_id"], 5)
         self.assertEqual(o1["score"], 55)
+        self.assertEqual(json.loads(r.data)["meta"]["total"], 1)
 
     def test_user_id_many_users(self):
-        """Test multiple users requested for /user_id"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/user_id", headers=self.auth_header, data={
-            "page_size": 2,
+        """Test multiple users requested for /leaderboards"""
+        r = self.client.get("/api/leaderboards", headers=self.auth_header, query_string={
+            "page_size": 3,
             "user_id": "4,5,6",
         })
-        self.assertEqual(json.loads(r.data)["meta"]["total"], 3)
+        print r.data
         o1, o2, o3 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1], json.loads(r.data)["data"][2]
         self.assertEqual(o1["user_id"], 6)
         self.assertEqual(o2["user_id"], 5)
         self.assertEqual(o3["user_id"], 4)
-
-    def test_user_id_no_user_id(self):
-        """Does /user_id error when not given a user_id?"""
-        r = self.client.get("/api/user_id", headers=self.auth_header)
-        self.assertEqual(r.status_code, 400)
+        self.assertEqual(json.loads(r.data)["meta"]["total"], 3)
 
     def test_user_id_dates_misordered(self):
-        """Does /user_id error when the dates are out of order?"""
-        r = self.client.get("/api/user_id", headers=self.auth_header, data={
+        """Does /leaderboards with a user_id error when the dates are out of order?"""
+        r = self.client.get("/api/leaderboards", headers=self.auth_header, query_string={
             "user_id": 5,
             "start_date": "2015-05-20T00:16:00",
             "end_date": "2015-05-01T12:34:56",
@@ -191,46 +171,39 @@ class APIViewsTest(BaseTestCase):
         self.assertEqual(r.status_code, 400)
 
     def test_user_id_tag_filter(self):
-        """Does the tag filter work on /user_id?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/user_id", headers=self.auth_header, data={
+        """Does the tag filter work on /leaderboards?"""
+        r = self.client.get("/api/leaderboards", headers=self.auth_header, query_string={
             "user_id": 1,
+            "tag": "fun"
         })
-        self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
         o1, o2 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1]
         self.assertEqual(o1["user_id"], 1)
         self.assertEqual(o1["score"], 41)
         self.assertEqual(o2["user_id"], 1)
         self.assertEqual(o2["score"], 31)
+        self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
 
     def test_user_id_date_filter(self):
-        """Does the date filter work on /user_id?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/user_id", headers=self.auth_header, data={
+        """Does the date filter work on /leaderboards?"""
+        r = self.client.get("/api/leaderboards", headers=self.auth_header, query_string={
             "user_id": 4,
             "start_date": "2015-04-01T12:34:56",
-            "end_date": "2015-04-21T23:59:59",
+            "end_date": "2015-04-22T23:59:59",
         })
-        self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
-        o1, o2 = json.loads(r.data)["data"][0], json.loads(r.data)["data"][1]
-        self.assertEqual(o1["user_id"], 4)
-        self.assertEqual(o1["score"], 32)
-        self.assertEqual(o2["user_id"], 4)
-        self.assertEqual(o2["score"], 22)
+        o = json.loads(r.data)["data"][0]
+        self.assertEqual(o["user_id"], 4)
+        self.assertEqual(o["score"], 44)
+        self.assertEqual(json.loads(r.data)["meta"]["total"], 1)
 
     def test_user_id_dates_descending(self):
-        """Does sort work on /user_id?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
-        r = self.client.get("/api/user_id", headers=self.auth_header, data={
+        """Does sort work on /leaderboards?"""
+        r = self.client.get("/api/leaderboards", headers=self.auth_header, query_string={
             "user_id": 1,
         })
-        self.assertEqual(json.loads(r.data)["meta"]["total"], 2)
         data = json.loads(r.data)["data"]
         sorted_data = sorted(data, key=lambda x: x["created_at"], reverse=True)
         self.assertEqual(data, sorted_data)
+        self.assertEqual(json.loads(r.data)["meta"]["total"], 3)
 
     # **********  add_score  *********
 
@@ -266,8 +239,6 @@ class APIViewsTest(BaseTestCase):
     # **********  add_score_and_list  *********
     def test_add_and_list_basic(self):
         """Test basic /add_score_and_lsit usage"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
         r = self.client.post("/api/add_score_and_list", data={
             "user_id": 11,
             "score": 25,
@@ -312,8 +283,6 @@ class APIViewsTest(BaseTestCase):
 
     def test_add_and_list_ascending(self):
         """Does sort work on /add_score_and_list?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
         r = self.client.post("/api/add_score_and_list", data={
             "user_id": 11,
             "score": 25,
@@ -335,8 +304,6 @@ class APIViewsTest(BaseTestCase):
 
     def test_add_and_list_tag_filter(self):
         """Does tag filter work on /add_score_and_list?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
         r = self.client.post("/api/add_score_and_list", data={
             "user_id": 11,
             "score": 37,
@@ -379,9 +346,7 @@ class APIViewsTest(BaseTestCase):
     # ********** api_key creation **********
     def test_api_key_create_basic(self):
         """Can you create an api token and get it back?"""
-        DB.session.add_all(self.starting_data)
-        DB.session.commit()
         r = self.client.get("/api/signup")
         key = json.loads(r.data)["data"]["api_key"]
         self.assertIsNotNone(key)
-        self.assertIsNotNone(Game.query.filter(Game.api_key == key).first())
+        # self.assertIsNotNone(Game.query.filter(Game.api_key == key).first())
