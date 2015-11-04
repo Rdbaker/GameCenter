@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """API models."""
 import sqlalchemy as db
-from gamecenter.core.models import Base
 from sqlalchemy.orm import relationship, backref
+
+from gamecenter.core.models import Base
 
 
 class Score(Base):

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """API helpers for GET requests."""
+from datetime import datetime as dt
+
 import iso8601
 from flask import request
-from datetime import datetime as dt
 from sqlalchemy import and_, or_
 
 from gamecenter.core.utils import InvalidUsage

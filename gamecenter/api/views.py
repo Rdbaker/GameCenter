@@ -17,7 +17,7 @@ from gamecenter.api.helpers.meta import get_meta_from_args
 from gamecenter.api.helpers.get import (
     get_request_args,
     construct_and_
-    )
+)
 
 SESSION = scoped_session(sessionmaker())
 SCORESCHEMA = ScoreSchema()
