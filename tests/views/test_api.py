@@ -209,24 +209,24 @@ class APIViewsTest(BaseTestCase):
 
     def test_add_score_no_user_id(self):
         """Does /add_score error if no user_id is given?"""
-        r = self.client.post("/api/add_score", data={
+        r = self.client.post("/api/add_score", data=json.dumps({
             "score": 99,
-        })
+        }))
         self.assertEqual(r.status_code, 400)
 
     def test_add_score_no_score(self):
         """Does /add_score error if no score is given?"""
-        r = self.client.post("/api/add_score", data={
+        r = self.client.post("/api/add_score", data=json.dumps({
             "user_id": 5,
-        })
+        }))
         self.assertEqual(r.status_code, 400)
 
     def test_add_score_basic(self):
         """Test basic /add_score usage"""
-        r = self.client.post("/api/add_score", data={
+        r = self.client.post("/api/add_score", data=json.dumps({
             "user_id": 11,
             "score": 11,
-        })
+        }))
         self.assertEqual(json.loads(r.data)["data"]["user_id"], 11)
         self.assertEqual(json.loads(r.data)["data"]["score"], 11)
 
@@ -239,11 +239,14 @@ class APIViewsTest(BaseTestCase):
     # **********  add_score_and_list  *********
     def test_add_and_list_basic(self):
         """Test basic /add_score_and_lsit usage"""
-        r = self.client.post("/api/add_score_and_list", data={
-            "user_id": 11,
-            "score": 25,
-            "radius": 1,
-        })
+        r = self.client.post(
+            "/api/add_score_and_list",
+            data=json.dumps({
+                "user_id": 11,
+                "score": 25,
+            }),
+            params={"radius": 1},
+        )
 
         scores = json.loads(r.data)["data"]
         s1, s2, s3 = scores[0], scores[1], scores[2]
@@ -259,37 +262,47 @@ class APIViewsTest(BaseTestCase):
 
     def test_add_and_list_no_user_id(self):
         """Does /add_score_and_list error if no user_id is given?"""
-        r = self.client.post("/api/add_score_and_list", data={
-            "score": 11,
-            "radius": 1,
-        })
+        r = self.client.post(
+            "/api/add_score_and_list",
+            data=json.dumps({
+                "score": 11,
+            }),
+            params={"radius": 1},
+        )
         self.assertEqual(r.status_code, 400)
 
     def test_add_and_list_no_score(self):
         """Does /add_score_and_list error if no score is given?"""
-        r = self.client.post("/api/add_score_and_list", data={
-            "user_id": 11,
-            "radius": 1,
-        })
+        r = self.client.post(
+            "/api/add_score_and_list",
+            data=json.dumps({
+                "user_id": 11,
+            }),
+            params={"radius": 1},
+        )
         self.assertEqual(r.status_code, 400)
 
     def test_add_and_list_no_radius(self):
         """Does /add_score_and_list error if no radius is given?"""
-        r = self.client.post("/api/add_score_and_list", data={
+        r = self.client.post("/api/add_score_and_list", data=json.dumps({
             "user_id": 11,
             "score": 11,
-        })
+        }))
         self.assertEqual(r.status_code, 400)
 
     def test_add_and_list_ascending(self):
         """Does sort work on /add_score_and_list?"""
-        r = self.client.post("/api/add_score_and_list", data={
-            "user_id": 11,
-            "score": 25,
-            "radius": 1,
-            "sort": "ascending",
-        })
-
+        r = self.client.post(
+            "/api/add_score_and_list",
+            data=json.dumps({
+                "user_id": 11,
+                "score": 25,
+            }),
+            params={
+                "radius": 1,
+                "sort": "ascending",
+            },
+        )
         scores = json.loads(r.data)["data"]
         s1, s2, s3 = scores[0], scores[1], scores[2]
 
@@ -304,12 +317,17 @@ class APIViewsTest(BaseTestCase):
 
     def test_add_and_list_tag_filter(self):
         """Does tag filter work on /add_score_and_list?"""
-        r = self.client.post("/api/add_score_and_list", data={
-            "user_id": 11,
-            "score": 37,
-            "radius": 1,
-            "filter_tag": "level1",
-        })
+        r = self.client.post(
+            "/api/add_score_and_list",
+            data=json.dumps({
+                "user_id": 11,
+                "score": 37,
+            }),
+            params={
+                "radius": 1,
+                "filter_tag": "level1",
+            },
+        )
         Score(created_at=datetime(2015, 4, 22), user_id=3, score=33, tag="level1"),
         Score(created_at=datetime(2015, 4, 22), user_id=4, score=44, tag="level1"),
 
