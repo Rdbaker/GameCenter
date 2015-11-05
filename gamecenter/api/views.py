@@ -67,8 +67,7 @@ def leaderboards_controller(args):
 
 @blueprint.route('/add_score', methods=['POST'])
 @handle_api_key
-@get_request_args
-def add_score_controller(args):
+def add_score_controller():
     return jsonify(data=SCORESCHEMA.dump(create_entry()).data)
 
 
