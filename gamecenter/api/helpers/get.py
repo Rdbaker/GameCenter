@@ -35,10 +35,10 @@ def construct_and_(args):
 
 
 def get_request_args(view_func):
-    """Make sure all arguments are passed to a view."""
+    """Make sure all URL and POST data arguments are passed to a view."""
     @wraps(view_func)
     def get_args():
-        """Get the arguments from a request."""
+        """Get the URL and POST data arguments from a request."""
         both = {k: v[0] for k,v in dict(request.args).iteritems()}
         both.update(json.loads(request.data or "{}"))
         args = {}
@@ -142,7 +142,7 @@ def valid_page_size(size):
     """Returns the given size if it's valid, else returns the default"""
     if isinstance(size, unicode) and int(size) >= 0:
         if int(size) >= 25:
-            return 25
+            return 25  # TODO: factor out magick numbers
         else:
             return int(size)
     else:
