@@ -80,17 +80,18 @@ def add_score_and_list_controller(args):
     order = Score.score.desc()
     if args['sort'] == 'ascending':
         order = Score.score
-    del args['user_id']
-    args['end_date'] = datetime.datetime.utcnow()
+    del args['user_id']  # we don't want to filter based on this
+    args['end_date'] = datetime.datetime.utcnow()  # so that the end date is after the new score's date
+
+    if args['filter_tag'] not in (None, args['tag']):
+        raise InvalidUsage("filter_tag must be either null or the same as the new score's tag")
 
     if args['radius'] is None:
-        raise InvalidUsage("Radius is required")
+        raise InvalidUsage("radius is required")
 
     q = Score.query.order_by(order).filter(construct_and_(args))
     q_results = q.all()
     new_score_index = (i for i, row in enumerate(q_results) if row.id == new_score.id).next()
-    # TODO update the docs to say we're ignoring the page_size for this request
-    # TODO: guarantee that filter_tag and tag are the same
 
     offset = max(0, new_score_index - args['radius'])
     return scores_from_query(

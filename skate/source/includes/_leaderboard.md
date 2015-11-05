@@ -210,7 +210,10 @@ curl "https://tmwild.com/api/leaderboards?radius=1"
 
 Add a new score and receive the scores above and below the new score. The
 parameters for adding the new score are in the POST data, while the
-parameters for listing nearby scores are in the URL parameters.
+parameters for listing nearby scores are in the URL parameters. The standard
+pagination does not apply to this endpoint. `page_size` and `offset` are ignored,
+instead relying on the `radius` and new score entry to dictate which scores are
+returned.
 
 ### Data Parameters
 

@@ -307,6 +307,20 @@ class APIViewsTest(BaseTestCase):
         )
         self.assertEqual(r.status_code, 400)
 
+    def test_add_and_list_tags_mismatch(self):
+        """Does /add_score_and_list error if tag and filter_tag are different?"""
+        r = self.client.post(
+            "/api/add_score_and_list",
+            data=json.dumps({
+                "score": 11,
+                "user_id": 11,
+                "tag": "level99",
+            }),
+            query_string={"radius": 1, "filter_tag": "level0"},
+            headers=self.auth_header,
+        )
+        self.assertEqual(r.status_code, 400)
+
     def test_add_and_list_no_score(self):
         """Does /add_score_and_list error if no score is given?"""
         r = self.client.post(
