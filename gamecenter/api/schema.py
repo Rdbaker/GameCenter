@@ -14,3 +14,4 @@ class ScoreSchema(ModelSchema):
 
     user_id = fields.Int(required=True)
     score = fields.Int(required=True)
+    game_id = fields.Int(required=True)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """API section."""
+import datetime
 import functools
 import json
 import random
@@ -17,7 +18,7 @@ from gamecenter.api.helpers.meta import get_meta_from_args
 from gamecenter.api.helpers.get import (
     get_request_args,
     construct_and_
-    )
+)
 
 SESSION = scoped_session(sessionmaker())
 SCORESCHEMA = ScoreSchema()
@@ -55,12 +56,47 @@ def signup():
 
 
 @blueprint.route('/leaderboards', methods=['GET', 'POST'])
+@handle_api_key
 @get_request_args
 def leaderboards_controller(args):
     if request.method == 'GET':
         return get_paginated_scores(args)
     else:
-        return create_entry()
+        return jsonify(data=SCORESCHEMA.dump(create_entry()).data)
+
+
+@blueprint.route('/add_score', methods=['POST'])
+@handle_api_key
+def add_score_controller():
+    return jsonify(data=SCORESCHEMA.dump(create_entry()).data)
+
+
+@blueprint.route('/add_score_and_list', methods=['POST'])
+@handle_api_key
+@get_request_args
+def add_score_and_list_controller(args):
+    new_score = create_entry()
+    order = Score.score.desc()
+    if args['sort'] == 'ascending':
+        order = Score.score
+    del args['user_id']  # we don't want to filter based on this
+    args['end_date'] = datetime.datetime.utcnow()  # so that the end date is after the new score's date
+
+    if args['filter_tag'] not in (None, args['tag']):
+        raise InvalidUsage("filter_tag must be either null or the same as the new score's tag")
+
+    if args['radius'] is None:
+        raise InvalidUsage("radius is required")
+
+    q = Score.query.order_by(order).filter(construct_and_(args))
+    q_results = q.all()
+    new_score_index = (i for i, row in enumerate(q_results) if row.id == new_score.id).next()
+
+    offset = max(0, new_score_index - args['radius'])
+    return scores_from_query(
+        result_set=q.offset(offset).limit(2 * args['radius'] + 1),
+        args=args,
+    )
 
 
 def get_paginated_scores(args):
@@ -71,28 +107,26 @@ def get_paginated_scores(args):
     res_set = Score.query.order_by(order).filter(construct_and_(args))
     return scores_from_query(
         result_set=res_set.offset(args['offset'] - 1).limit(args['page_size']),
+        args=args,
         count=res_set.count(),
-        args=args)
+    )
 
 
 def create_entry():
-    results, errors = SCORESCHEMA.load(json.loads(request.data),
-                                       session=SESSION)
+    data = json.loads(request.data)
+    data["game_id"] = g.game.id
+    results, errors = SCORESCHEMA.load(data, session=SESSION)
     if errors:
         raise InvalidUsage(errors)
 
     DB.session.add(results)
     DB.session.commit()
 
-    return jsonify(entry=SCORESCHEMA.dump(results).data)
+    return results
 
 
-def user_and_radius(user_id, radius):
-    # TODO: make this work
-    return scores_from_query(
-        Score.query.filter(Score.user_id == user_id).all())
-
-
-def scores_from_query(result_set, count, args):
+def scores_from_query(result_set, args, count=None):
     res = [SCORESCHEMA.dump(score).data for score in result_set]
+    if count is None:
+        count = len(res)
     return jsonify(data=res, meta=get_meta_from_args(count, args))

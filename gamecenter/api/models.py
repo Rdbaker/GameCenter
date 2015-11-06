@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """API models."""
+import datetime
+
 import sqlalchemy as db
-from gamecenter.core.models import Base
 from sqlalchemy.orm import relationship, backref
+
+from gamecenter.core.models import Base
 
 
 class Score(Base):
@@ -18,7 +21,7 @@ class Score(Base):
     user_id = db.Column(db.Integer, index=True, nullable=False)
     score = db.Column(db.Integer, nullable=False)
     tag = db.Column(db.String, index=True)
-    created_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
     game = relationship("Game", backref=backref("scores"))

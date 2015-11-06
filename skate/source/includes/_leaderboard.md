@@ -126,9 +126,11 @@ Score s = client.newScore(user_id, score, tag);
 ```
 
 ```shell
-curl "https://tmwild.com/api/leaderboards?user_id=1&score=220&tag=level two"
+curl "https://tmwild.com/api/leaderboards"
   -X POST
   -H "Authorization: Bearer myAPIKey"
+  -H "Content-Type: application/json"
+  -d '{"user_id":1,"score":220,"tag":"level two"}'
 ```
 
 > Example Response:
@@ -145,7 +147,7 @@ curl "https://tmwild.com/api/leaderboards?user_id=1&score=220&tag=level two"
 
 This endpoint creates a new score in the leaderboard and returns the score object back upon success.
 
-### Query Parameters
+### Data Parameters
 
 Parameter | Required | Type | Description
 --------- | -------- | ---- | -----------
@@ -173,9 +175,11 @@ ArrayList<Score> scores = client.newScoreAndList(user_id, score, tag, radius);
 ```
 
 ```shell
-curl "https://tmwild.com/api/leaderboards?user_id=1&score=220&tag=level two&radius=1"
+curl "https://tmwild.com/api/leaderboards?radius=1"
   -X POST
   -H "Authorization: Bearer myAPIKey"
+  -H "Content-Type: application/json"
+  -d '{"user_id":1,"score":220,"tag":"level two"}'
 ```
 
 > Example Response:
@@ -198,21 +202,29 @@ curl "https://tmwild.com/api/leaderboards?user_id=1&score=220&tag=level two&radi
     "id": 5,
     "user_id": 1,
     "score": 219,
-    "tag": "level two",
+    "tag": "level one",
     "created_at": "2015-07-11T17:46:22"
   }
 ]
 ```
 
-Add a new score and receive the scores above and below the new score.
+Add a new score and receive the scores above and below the new score. The
+parameters for adding the new score are in the POST data, while the
+parameters for listing nearby scores are in the URL parameters. The standard
+pagination does not apply to this endpoint. `page_size` and `offset` are ignored,
+instead relying on the `radius` and new score entry to dictate which scores are
+returned.
+
+### Data Parameters
+
+Parameter | Required | Type | Description
+--------- | -------- | ---- | -----------
+`user_id`   | yes    | Integer | The ID of the user to create a leaderboard entry for.
+`score`     | yes    | Integer | The score value for the entry in the leaderboard.
+`tag`       | no     | String | An identification tag for a leaderboard entry.
 
 ### Query Parameters
-
 Parameter | Required | Type | Default | Description
---------- | -------- | ---- | ------- | -----------
-`user_id`   | yes    | Integer |      | The ID of the user to create a leaderboard entry for.
-`score`     | yes    | Integer |      | The score value for the entry in the leaderboard.
-`tag`       | no     | String |       | An identification tag for a leaderboard entry.
 `radius`    | yes    | Integer |      | The number of scores to return above and below the user's score.
 `sort`    | no       | String | `"descending"` | The order the results will be returned, either `"ascending"` or `"descending"`.
 `filter_tag` | no    | String |       | A leaderboard tag to filter on. Must be either empty or the same as `tag`.
