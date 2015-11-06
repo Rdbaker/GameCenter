@@ -1,5 +1,5 @@
 ---
-title: Game Center Leaderboard API Reference
+title: Rank Leaderboard API Reference
 
 language_tabs:
   - java: Java
@@ -21,7 +21,6 @@ search: true
 
 
 #TODO
-- Update the endpoint so they arent all at the same URL.
 - Change the Java code to match the client, when that's done.
 - Factor out the imports in the example java code into the intro somewhere.
   Maybe do the same with cURL auth code with env vars?
