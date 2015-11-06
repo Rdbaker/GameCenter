@@ -40,7 +40,10 @@ def get_request_args(view_func):
     def get_args():
         """Get the URL and POST data arguments from a request."""
         both = {k: v[0] for k,v in dict(request.args).iteritems()}
+        #try:
         both.update(json.loads(request.data or "{}"))
+        #except:
+        #    raise InvalidUsage('Malformed JSON received.')
         args = {}
         compare_dates(start=both.get('start_date'), end=both.get('end_date'))
         args['start_date'] = valid_start_date(both.get('start_date'))

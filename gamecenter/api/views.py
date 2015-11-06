@@ -108,7 +108,7 @@ def get_paginated_scores(args):
     return scores_from_query(
         result_set=res_set.offset(args['offset'] - 1).limit(args['page_size']),
         args=args,
-        count=res_set.count(),
+        count=res_set.count()
     )
 
 
