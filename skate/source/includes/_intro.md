@@ -109,7 +109,7 @@ These parameters will not be shown in the example requests for brevity.
 
 ##Rate Limit
 The number of requests that can be made through the API is currently limited to
-3600 per 24 houres per Auth token, refreshing at midnight. If you exceed the
+3600 per 24 hours per Auth token, refreshing at midnight. If you exceed the
 rate limit, you will get a `429` error response. For all the errors that can be
 returned, see [the error section](/static/docs/index.html?#errors) below.
 
