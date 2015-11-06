@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import logging
 
 os_env = os.environ
 
@@ -15,6 +16,7 @@ class Config(object):
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
+    LOG_LEVEL = logging.INFO
 
 
 class ProdConfig(Config):
@@ -25,6 +27,8 @@ class ProdConfig(Config):
     # TODO: Change this to an os_env.get type thing to hide our DB URI
     SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/example'
     DEBUG_TB_ENABLED = False
+    LOG_FILE = 'logs/prod_log.json'
+    ERR_LOG = 'logs/prod_err_log.json'
 
 
 class DevConfig(Config):
@@ -39,6 +43,9 @@ class DevConfig(Config):
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True
     CACHE_TYPE = 'simple'
+    LOG_LEVEL = logging.DEBUG
+    LOG_FILE = 'logs/lcl_log.json'
+    ERR_LOG = 'logs/lcl_err_log.json'
 
 
 class TestConfig(Config):
@@ -47,3 +54,6 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'postgresql://localuser:localpassword@localhost/gamecenter_test'
     BCRYPT_LOG_ROUNDS = 1  # For faster tests
     WTF_CSRF_ENABLED = False  # Allows form testing
+    LOG_LEVEL = logging.DEBUG
+    LOG_FILE = 'logs/test_log.json'
+    ERR_LOG = 'logs/test_err_log.json'
