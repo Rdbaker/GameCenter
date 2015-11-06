@@ -44,14 +44,14 @@ def get_request_args(view_func):
         args = {}
         compare_dates(start=both.get('start_date'), end=both.get('end_date'))
         args['start_date'] = valid_start_date(both.get('start_date'))
+        args['filter_tag'] = valid_tag(both.get('filter_tag'))
         args['page_size'] = valid_page_size(both.get('page_size'))
         args['end_date'] = valid_end_date(both.get('end_date'))
         args['user_id'] = valid_user_id(both.get('user_id'))
+        args['radius'] = valid_radius(both.get('radius'))
         args['offset'] = valid_offset(both.get('offset'))
         args['sort'] = valid_sort(both.get('sort'))
         args['tag'] = valid_tag(both.get('tag'))
-        args['filter_tag'] = valid_tag(both.get('filter_tag'))
-        args['radius'] = valid_radius(both.get('radius'))
         return view_func(args)
     return get_args
 
