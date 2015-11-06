@@ -6,7 +6,7 @@ from flask import (
     current_app,
     Flask,
     jsonify,
-    render_template
+    render_template,
 )
 
 from gamecenter.api import views as api
@@ -19,14 +19,14 @@ from gamecenter.logger import (
     RankErrFormatter,
     RankFilter,
     RankFormatter,
-    RankTimedRotatingFileHandler
+    RankTimedRotatingFileHandler,
 )
 from gamecenter.public import views as public
 from gamecenter.settings import ProdConfig
 from gamecenter.extensions import (
     cache,
     migrate,
-    debug_toolbar
+    debug_toolbar,
 )
 
 
@@ -34,7 +34,7 @@ def create_app(config_object=ProdConfig):
     """An application factory, as explained here:
         http://flask.pocoo.org/docs/patterns/appfactories/
 
-    :param config: The configuration object to use.
+    :param config_object: The configuration object to use.
     """
     app = Flask(__name__)
     app.config.from_object(config_object)
