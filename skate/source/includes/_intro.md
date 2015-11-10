@@ -16,8 +16,7 @@ another score.
 
 ##Requests
 Any tool that can make HTTP requests can use the API by requesting the correct
-URI. Requests should be made HTTPS so the traffic is encrypted, though the API
-will accept HTTP if you cannot use HTTPS for some reason. Alternatively, you can
+URI. Requests should be made HTTPS so the traffic is encrypted Alternatively, you can
 use our Java client library. You can chose the cURL examples or the Java
 client examples on the right.
 
