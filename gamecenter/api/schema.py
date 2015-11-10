@@ -3,7 +3,7 @@
 from marshmallow import fields
 from marshmallow_sqlalchemy import ModelSchema
 
-from gamecenter.api.models import Score
+from gamecenter.api.models import Score, UserRequest
 
 
 class ScoreSchema(ModelSchema):
@@ -15,3 +15,10 @@ class ScoreSchema(ModelSchema):
     user_id = fields.Int(required=True)
     score = fields.Int(required=True)
     game_id = fields.Int(required=True)
+
+
+class UserRequestSchema(ModelSchema):
+    """Schema for a UserRequest model."""
+    class Meta:
+        """Meta information for the UserRequestSchema"""
+        model = UserRequest

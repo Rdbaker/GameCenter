@@ -1,0 +1,48 @@
+{% extends "user/layout.html" %}
+
+{% block js %}
+{% assets "overview_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+
+{% block content %}
+<div class="card-wide mdl-card mdl-shadow--4dp mdl-color--blue-grey-500">
+  <div class="mdl-card__title mdl-color-text--blue-grey-50">
+    <h2 class="mdl-card__title-text">Today's Request Summary</h2>
+  </div>
+  <div class="mdl-card__supporting-text request-card-content mdl-color-text--blue-grey-50">
+    <h2 class="request-card-count" id="requests-made">X</h2>
+    out of your allotted
+    <h2 class="request-card-count">3600</h2>
+  </div>
+  <div class="mdl-card__actions mdl-card--border" id="request-count-card-actions">
+    <a class="mdl-button mdl-button--raised mdl-button--disabled mdl-js-button mdl-js-ripple-effect mdl-color--orange-400">
+      Upgrade
+    </a>
+  </div>
+</div>
+
+
+<div class="card-wide mdl-card mdl-shadow--4dp">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Request Frequency Breakdown</h2>
+  </div>
+  <div id="distribution-selection">
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="weekly">
+      <input type="radio" id="weekly" class="mdl-radio__button" name="distribution-frequency" value="weekly" checked>
+      <span class="mdl-radio__label">This Week</span>
+    </label>
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="daily">
+      <input type="radio" id="daily" class="mdl-radio__button" name="distribution-frequency" value="daily">
+      <span class="mdl-radio__label">This Day</span>
+    </label>
+  </div>
+  <div class="mdl-card__supporting-text request-card-content">
+    A big chart will go here
+  </div>
+</div>
+
+
+
+{% endblock %}

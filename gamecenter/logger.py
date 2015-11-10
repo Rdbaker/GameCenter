@@ -6,6 +6,8 @@ import logging
 import arrow
 from flask import request, g
 
+from gamecenter.api.models import UserRequest
+
 
 class RankTimedRotatingFileHandler(logging.handlers.TimedRotatingFileHandler):
     """
@@ -41,6 +43,13 @@ class RankFormatter(logging.Formatter):
             ('uri', request.path),
             ('status', record.msg)
             ])
+        # make a new UserRequest object here
+        UserRequest.create(
+            http_verb=request.method,
+            game_id=g.game.id,
+            status=record.msg,
+            uri=request.path,
+        )
         record.msg = json.dumps(message)
         return super(RankFormatter, self).format(record)
 
@@ -51,7 +60,6 @@ class RankErrFormatter(logging.Formatter):
         """Format the record to be how we want it"""
         message = OrderedDict([
             ('time requested', arrow.utcnow().format()),
-            #('game id', g.game.id),
             ('trace', record.msg)
             ])
         record.msg = json.dumps(message)

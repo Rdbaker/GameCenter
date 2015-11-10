@@ -1,4 +1,4 @@
-"""empty message
+"""3rd update that adds Games table with API_KEY and backref on scores
 
 Revision ID: 37a45401820b
 Revises: 3414dfab0e91

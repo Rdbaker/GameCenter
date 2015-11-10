@@ -23,6 +23,7 @@ Then run the following commands to bootstrap your environment.
     git clone https://github.com/rdbaker/gamecenter
     cd gamecenter
     pip install -r requirements/dev.txt
+    npm install
     python manage.py server
 
 You will see a pretty welcome screen.

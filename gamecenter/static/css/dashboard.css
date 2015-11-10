@@ -1,0 +1,112 @@
+@media -sass-debug-info{filename{}line{font-family:\000031}}
+#request-count-card-actions {
+  text-align: center;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\000034}}
+.card-wide {
+  margin: 5% 20%;
+  width: 60%;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\000038}}
+.request-card-count {
+  display: inline;
+  margin: 5px;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000312}}
+.request-card-content {
+  text-align: center;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000315}}
+.mdl-layout__drawer .mdl-textfield {
+  padding-top: 27px;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000318}}
+.mdl-layout__header .mdl-layout__drawer-button {
+  color: white;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000321}}
+.mdl-layout__drawer .avatar {
+  margin-bottom: 16px;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000324}}
+.mdl-layout__drawer {
+  border: none;
+}
+
+/* iOS Safari specific workaround */
+@media -sass-debug-info{filename{}line{font-family:\0000328}}
+.mdl-layout__drawer .mdl-menu__container {
+  z-index: -1;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000331}}
+.mdl-layout__drawer .mdl-navigation {
+  z-index: -2;
+}
+
+/* END iOS Safari specific workaround */
+@media -sass-debug-info{filename{}line{font-family:\0000335}}
+.mdl-layout__drawer .mdl-menu .mdl-menu__item {
+  display: flex;
+  align-items: center;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000339}}
+.mdl-layout__drawer-header {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  height: 151px;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000347}}
+.drawer-title {
+  padding: 20px;
+  text-align: center;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000351}}
+.drawer-header-dropdown {
+  background-color: #607d8b;
+  color: white;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000360}}
+.mdl-navigation .mdl-navigation__link {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.56);
+  font-weight: 500;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000367}}
+.mdl-navigation .mdl-navigation__link:hover {
+  background-color: #5365c9;
+  color: #37474F;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000371}}
+.mdl-navigation .mdl-navigation__link .material-icons {
+  font-size: 24px;
+  margin-right: 32px;
+}
+
+@media -sass-debug-info{filename{}line{font-family:\0000375}}
+.mdl-navigation .mdl-navigation__link {
+  color: rgba(255, 255, 255, 0.56);
+}

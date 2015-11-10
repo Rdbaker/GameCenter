@@ -6,6 +6,12 @@ in app.py
 from flask_migrate import Migrate
 migrate = Migrate()
 
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt()
+
+from flask_login import LoginManager
+login_manager = LoginManager()
+
 from flask_cache import Cache
 cache = Cache()
 

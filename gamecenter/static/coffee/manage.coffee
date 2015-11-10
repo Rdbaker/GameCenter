@@ -1,0 +1,2 @@
+$ ->
+  $('#leaderboard-data-table').DataTable()

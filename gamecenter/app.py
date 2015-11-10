@@ -14,6 +14,12 @@ from gamecenter.assets import assets
 from gamecenter.core import views as core
 from gamecenter.core.models import DB as db
 from gamecenter.core.utils import InvalidUsage
+from gamecenter.extensions import (
+    cache,
+    login_manager,
+    migrate,
+    debug_toolbar,
+)
 from gamecenter.logger import (
     RankErrFilter,
     RankErrFormatter,
@@ -23,11 +29,7 @@ from gamecenter.logger import (
 )
 from gamecenter.public import views as public
 from gamecenter.settings import ProdConfig
-from gamecenter.extensions import (
-    cache,
-    migrate,
-    debug_toolbar,
-)
+from gamecenter.user import views as user
 
 
 def create_app(config_object=ProdConfig):
@@ -65,6 +67,7 @@ def register_extensions(app):
     assets.init_app(app)
     cache.init_app(app)
     db.init_app(app)
+    login_manager.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     return None
@@ -75,6 +78,7 @@ def register_blueprints(app):
     app.register_blueprint(public.blueprint)
     app.register_blueprint(api.blueprint)
     app.register_blueprint(core.blueprint)
+    app.register_blueprint(user.blueprint)
     return None
 
 
