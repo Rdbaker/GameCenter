@@ -24,5 +24,4 @@ search: true
 - Change the Java code to match the client, when that's done.
 - Factor out the imports in the example java code into the intro somewhere.
   Maybe do the same with cURL auth code with env vars?
-- Separate GET params and POST params in examples. Possibly different tables in
-  the description.
+- Add instructions on how to get an API key once that's solidified

@@ -55,14 +55,11 @@ def signup():
     return jsonify({"data": {"api_key": key}})
 
 
-@blueprint.route('/leaderboards', methods=['GET', 'POST'])
+@blueprint.route('/leaderboards', methods=['GET'])
 @handle_api_key
 @get_request_args
 def leaderboards_controller(args):
-    if request.method == 'GET':
-        return get_paginated_scores(args)
-    else:
-        return jsonify(data=SCORESCHEMA.dump(create_entry()).data)
+    return get_paginated_scores(args)
 
 
 @blueprint.route('/add_score', methods=['POST'])
