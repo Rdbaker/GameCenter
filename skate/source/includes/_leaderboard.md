@@ -225,7 +225,9 @@ Parameter | Required | Type | Description
 `tag`       | no     | String | An identification tag for a leaderboard entry.
 
 ### Query Parameters
+
 Parameter | Required | Type | Default | Description
+--------- | -------- | ---- | ------- | -----------
 `radius`    | yes    | Integer |      | The number of scores to return above and below the user's score.
 `sort`    | no       | String | `"descending"` | The order the results will be returned, either `"ascending"` or `"descending"`.
 `filter_tag` | no    | String |       | A leaderboard tag to filter on. Must be either empty or the same as `tag`.
