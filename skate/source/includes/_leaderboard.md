@@ -210,18 +210,22 @@ curl "https://tmwild.com/api/add_score_and_list"
 ```
 
 Add a new score and receive the scores above and below the new score. The
-parameters for adding the new score and listing nearby scores are both in
-the POST data and listing nearby. The standard pagination does not apply
-to this endpoint. `page_size` and `offset` are ignored, instead relying on
-the `radius` and new score entry to dictate which scores are returned.
+parameters for adding the new score are in the POST data, while the
+parameters for listing nearby scores are in the URL parameters. The standard
+pagination does not apply to this endpoint. `page_size` and `offset` are ignored,
+instead relying on the `radius` and new score entry to dictate which scores are
+returned.
 
 ### Data Parameters
 
+Parameter | Required | Type | Description
+--------- | -------- | ---- | -----------
+`user_id`   | yes    | Integer | The ID of the user to create a leaderboard entry for.
+`score`     | yes    | Integer | The score value for the entry in the leaderboard.
+`tag`       | no     | String | An identification tag for a leaderboard entry.
+
+### Query Parameters
 Parameter | Required | Type | Default | Description
---------- | -------- | ---- | ------- | ----------
-`user_id` | yes      | Integer |      | The ID of the user to create a leaderboard entry for.
-`score`   | yes      | Integer |      | The score value for the entry in the leaderboard.
-`radius`  | yes      | Integer |      | The number of scores to return above and below the user's score.
-`sort`    | no       | String  | `"descending"` | The order the results will be returned, either `"ascending"` or `"descending"`.
-`tag`     | no       | String  |      | An identification tag for a leaderboard entry.
+`radius`    | yes    | Integer |      | The number of scores to return above and below the user's score.
+`sort`    | no       | String | `"descending"` | The order the results will be returned, either `"ascending"` or `"descending"`.
 `filter_tag` | no    | String |       | A leaderboard tag to filter on. Must be either empty or the same as `tag`.
