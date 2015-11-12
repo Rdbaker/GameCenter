@@ -1,4 +1,4 @@
-"""empty message
+"""Initial upgrade with Scores
 
 Revision ID: 52feb4cd3e65
 Revises: None

@@ -1,0 +1,33 @@
+{% extends "user/layout.html" %}
+
+{% block js %}
+{% assets "settings_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+
+{% block content %}
+<div class="mdl-card--colored mdl-shadow--4dp card-wide">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Reset the API Key</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <span>
+      If, for some reason, you need to change your API key.
+      Click the button below to create a new one.
+    </span>
+    <h5>
+      Current API key: {{ current_user.game.api_key }}
+    </h5>
+  </div>
+  <form action="{{ url_for('user.reset_key') }}" method="POST">
+    <div class="mdl-card__actions mdl-card--border" id="request-count-card-actions">
+      <input type="submit" value="Refresh" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent">
+    </div>
+  </form>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "user/layout.html" %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
+{% assets "manage_css" %}
+  <link rel="stylesheet" href="{{ ASSET_URL }}">
+{% endassets %}
+{% endblock %}
+
+{% block content %}
+
+<div class="mdl-card--colored mdl-shadow--4dp card-wide" id="data-table-card">
+  <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="leaderboard-data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Created At</th>
+        <th>Score</th>
+        <th>User Id</th>
+        <th>Tag</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for score in scores %}
+      <tr>
+        <td>{{ score.id }}</td>
+        <td>{{ score.created_at[:-13] }}</td>
+        <td>{{ score.score }}</td>
+        <td>{{ score.user_id }}</td>
+        <td>{{ score.tag }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+{% assets "manage_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}

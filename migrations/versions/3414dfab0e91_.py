@@ -1,4 +1,4 @@
-"""empty message
+"""2nd update that adds an index on the user_id column
 
 Revision ID: 3414dfab0e91
 Revises: 52feb4cd3e65

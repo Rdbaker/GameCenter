@@ -11,7 +11,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import blueprint
 from gamecenter.api.models import Score, Game
-from gamecenter.api.schema import ScoreSchema
+from gamecenter.api.schema import ScoreSchema, UserRequestSchema
 from gamecenter.core.models import DB
 from gamecenter.core.utils import InvalidUsage
 from gamecenter.api.helpers.meta import get_meta_from_args
@@ -22,6 +22,7 @@ from gamecenter.api.helpers.get import (
 
 SESSION = scoped_session(sessionmaker())
 SCORESCHEMA = ScoreSchema()
+REQUESTSCHEMA = UserRequestSchema()
 
 
 def handle_api_key(f):
@@ -40,19 +41,21 @@ def handle_api_key(f):
     return decorated_function
 
 
-@blueprint.route('/signup', methods=['GET'])
-def signup():
+def create_game():
+    game = Game(api_key=get_unique_key())
+    DB.session.add(game)
+    DB.session.commit()
+    return game
+
+
+def get_unique_key():
     chars = string.ascii_uppercase + string.digits
     length = 32
 
     key = ''.join(random.choice(chars) for _ in range(length))
     while Game.query.filter_by(api_key=key).first():
         key = ''.join(random.choice(chars) for _ in range(length))
-
-    game = Game(api_key=key)
-    DB.session.add(game)
-    DB.session.commit()
-    return jsonify({"data": {"api_key": key}})
+    return key
 
 
 @blueprint.route('/leaderboards', methods=['GET'])
@@ -110,7 +113,10 @@ def get_paginated_scores(args):
 
 
 def create_entry():
-    data = json.loads(request.data)
+    try:
+        data = json.loads(request.data)
+    except:
+        raise InvalidUsage('Malformed JSON')
     data["game_id"] = g.game.id
     results, errors = SCORESCHEMA.load(data, session=SESSION)
     if errors:
