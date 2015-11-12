@@ -51,4 +51,7 @@ gamecenter/static/docs
 postgres
 
 # ignore the things inside of the log folder
-logs/*log.json
+logs/*.json
+
+# ignore the compiled JS files
+gamecenter/static/js

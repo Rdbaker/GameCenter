@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """API models."""
-import datetime
-
+import arrow
 import sqlalchemy as db
 from sqlalchemy.orm import relationship, backref
 
@@ -21,7 +20,7 @@ class Score(Base):
     user_id = db.Column(db.Integer, index=True, nullable=False)
     score = db.Column(db.Integer, nullable=False)
     tag = db.Column(db.String, index=True)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=arrow.utcnow().datetime
 
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
     game = relationship("Game", backref=backref("scores"))
@@ -48,7 +47,7 @@ class UserRequest(Base, CRUDMixin):
     :param int status: the integer response code sent to the client
     """
     __tablename__ = "requests"
-    time_requested = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    time_requested = db.Column(db.DateTime, nullable=False, default=arrow.utcnow().datetime)
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
     game = relationship("Game", backref=backref("user_requests"))
     http_verb = db.Column(db.String, nullable=False)

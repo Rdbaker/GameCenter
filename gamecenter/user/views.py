@@ -47,8 +47,9 @@ def manage_data():
 @blueprint.route('/requests', methods=['GET'])
 @handle_api_key
 def requests_controller():
-    seven_days_ago = arrow.utcnow().date() - datetime.timedelta(days=7)
-    yesterday = arrow.utcnow().date() - datetime.timedelta(days=1)
+    midnight = arrow.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).datetime
+    seven_days_ago = midnight - datetime.timedelta(days=7)
+    yesterday = midnight - datetime.timedelta(days=1)
     weekly_reqs = UserRequest.query.filter(
         UserRequest.game_id == g.game.id,
         UserRequest.time_requested > seven_days_ago).order_by(UserRequest.time_requested.desc())
