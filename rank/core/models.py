@@ -4,7 +4,7 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 
-from gamecenter.compat import basestring
+from rank.compat import basestring
 
 DB = SQLAlchemy()
 db = DB
@@ -90,9 +90,9 @@ class Base(DB.Model):
 
 
 def init_db():
-    import gamecenter.models
+    import rank.models
     DB.create_all()
 
 def drop_db():
-    import gamecenter.models
+    import rank.models
     DB.drop_all()

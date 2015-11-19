@@ -4,13 +4,13 @@ import datetime as dt
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship, backref
 
-from gamecenter.core.models import (
+from rank.core.models import (
     DB as db,
     SurrogatePK,
     ReferenceCol,
     CRUDMixin
 )
-from gamecenter.extensions import bcrypt
+from rank.extensions import bcrypt
 
 
 class Role(SurrogatePK, db.Model):

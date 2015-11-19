@@ -10,12 +10,12 @@ from flask import (
 )
 from flask_login import login_user, login_required, logout_user
 
-from gamecenter.api.views import create_game
-from gamecenter.extensions import login_manager
-from gamecenter.public.forms import LoginForm
-from gamecenter.user.forms import RegisterForm
-from gamecenter.user.models import User
-from gamecenter.utils import flash_errors
+from rank.api.views import create_game
+from rank.extensions import login_manager
+from rank.public.forms import LoginForm
+from rank.user.forms import RegisterForm
+from rank.user.models import User
+from rank.utils import flash_errors
 
 blueprint = Blueprint('public', __name__, static_folder="../static")
 

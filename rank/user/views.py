@@ -7,9 +7,9 @@ from flask import render_template, jsonify, g, redirect, url_for
 from flask_login import login_required, current_user
 
 from . import blueprint
-from gamecenter.api.models import UserRequest, Score
-from gamecenter.api.schema import UserRequestSchema, ScoreSchema
-from gamecenter.api.views import handle_api_key, get_unique_key
+from rank.api.models import UserRequest, Score
+from rank.api.schema import UserRequestSchema, ScoreSchema
+from rank.api.views import handle_api_key, get_unique_key
 
 REQUESTSCHEMA = UserRequestSchema()
 SCORESCHEMA = ScoreSchema()

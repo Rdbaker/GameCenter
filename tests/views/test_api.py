@@ -1,9 +1,9 @@
 from datetime import datetime
 import json
 
-from gamecenter.api.models import Score, Game
-from gamecenter.core.utils_test import BaseTestCase
-from gamecenter.core.models import DB
+from rank.api.models import Score, Game
+from rank.core.utils_test import BaseTestCase
+from rank.core.models import DB
 
 
 # URL_PREFIX = "https://tmwild.com/api"

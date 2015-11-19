@@ -3,7 +3,7 @@
 from flask import jsonify
 
 from . import blueprint
-from gamecenter import __version__
+from rank import __version__
 
 
 @blueprint.route('/status')

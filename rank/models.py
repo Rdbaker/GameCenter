@@ -3,5 +3,5 @@
 utilities.
 """
 
-from gamecenter.api import models as api_models
-from gamecenter.user import models as user_models
+from rank.api import models as api_models
+from rank.user import models as user_models

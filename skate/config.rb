@@ -28,7 +28,7 @@ end
 activate :relative_assets
 set :relative_links, true
 
-set :build_dir, '../gamecenter/static/docs'
+set :build_dir, '../rank/static/docs'
 
 # Build Configuration
 configure :build do

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from gamecenter.app import create_app
-from gamecenter.settings import ProdConfig, DevConfig
+from rank.app import create_app
+from rank.settings import ProdConfig, DevConfig
 
 
 def test_production_config():

@@ -2,7 +2,7 @@
 
 ##Introduction
 
-Welcome to the GameCenter API documentation.
+Welcome to the Rank API documentation.
 
 We have a Java client library, or you can use direct HTTP requests (with
 cURL or some other tool). You can view code examples in the dark area to

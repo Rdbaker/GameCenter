@@ -4,7 +4,7 @@ import arrow
 import sqlalchemy as db
 from sqlalchemy.orm import relationship, backref
 
-from gamecenter.core.models import Base, CRUDMixin
+from rank.core.models import Base, CRUDMixin
 
 
 class Score(Base):
