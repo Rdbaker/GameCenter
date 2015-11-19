@@ -1,0 +1,55 @@
+{% extends "user/layout.html" %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="mdl-card--colored mdl-shadow--4dp card-wide" id="data-table-card">
+  <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="leaderboard-data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Requests Today</th>
+        <th>Frozen?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.requests_today }}</td>
+        <td>{{ user.frozen }}</td>
+        <td>
+          <form method="GET" action="{{ url_for('user.manage_data', user_id=user.id) }}">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary">View Data</button>
+          </form>
+        <td>
+          <form method="POST" action="{{ url_for('user.freeze_user', user_id=user.id) }}">
+            {% if user.frozen %}
+              <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary">Unfreeze</button>
+            {% else %}
+              <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent">Freeze</button>
+            {% endif %}
+          </form>
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('user.delete_user', id=user.id) }}">
+            <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent">DELETE</button>
+          </form>
+        </td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+{% endblock %}

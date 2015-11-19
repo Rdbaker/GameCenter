@@ -34,6 +34,8 @@ def handle_api_key(f):
             api_key = ""
         game = Game.query.filter(Game.api_key == api_key).first()
         if game:
+            if game.frozen:
+                raise InvalidUsage("This account has been frozen.", 403)
             g.game = game
             return f(*args, **kwargs)
         else:

@@ -43,6 +43,13 @@ manage_css = Bundle(
     output="public/css/manage.css"
 )
 
+admin_dash_css = Bundle(
+    "sass/admin_dash.sass",
+    filters=['sass'],
+    output="public/css/admin_dash.css"
+)
+
+
 dashboard_css = Bundle(
     "sass/dashboard.sass",
     filters=['sass'],
@@ -58,3 +65,4 @@ assets.register("overview_js", overview_js)
 assets.register("manage_js", manage_js)
 assets.register("dashboard_css", dashboard_css)
 assets.register("manage_css", manage_css)
+assets.register("admin_dash_css", admin_dash_css)
