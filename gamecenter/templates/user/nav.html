@@ -3,7 +3,9 @@
     <span class="mdl-layout-title">Rank Dashboard</span>
     <div class="mdl-layout-spacer"></div>
     <nav class="mdl-navigation mdl-layout--large-screen-only">
-      <a class="mdl-navigation__link" href="{{ url_for('user.settings') }}">Account Settings</a>
+      {% if not current_user.is_admin %}
+        <a class="mdl-navigation__link" href="{{ url_for('user.settings') }}">Account Settings</a>
+      {% endif %}
       <a class="mdl-navigation__link" href="{{ url_for('public.logout') }}">Logout</a>
     </nav>
   </div>
@@ -17,7 +19,11 @@
         <span class="visuallyhidden">Accounts</span>
       </button>
       <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
-        <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for('user.settings') }}">Settings</a></li>
+        {% if current_user.is_admin %}
+          <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for('user.settings') }}">Customers</a></li>
+        {% else %}
+          <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for('user.settings') }}">Settings</a></li>
+        {% endif %}
         <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for('public.logout') }}">Logout</a></li>
       </ul>
     </div>
@@ -27,13 +33,20 @@
       <i class="material-icons mdl-text-color--blue-grey">insert_chart</i>
       Overview
     </a>
-    <a class="mdl-navigation__link" href="{{ url_for('user.manage_data') }}">
-      <i class="material-icons mdl-text-color--blue-grey">mode_edit</i>
-      Manage Data
-    </a>
+    {% if not current_user.is_admin %}
+      <a class="mdl-navigation__link" href="{{ url_for('user.manage_data', user_id=current_user.id) }}">
+        <i class="material-icons mdl-text-color--blue-grey">mode_edit</i>
+        Manage Data
+      </a>
+    {% endif %}
     <a class="mdl-navigation__link" href="{{ url_for('user.settings') }}">
-      <i class="material-icons mdl-text-color--blue-grey">settings</i>
-      Account Settings
+      {% if current_user.is_admin %}
+        <i class="material-icons mdl-text-color--blue-grey">attach_money</i>
+        Customers
+      {% else %}
+        <i class="material-icons mdl-text-color--blue-grey">settings</i>
+        Settings
+      {% endif %}
     </a>
     <a class="mdl-navigation__link" href="{{ url_for('public.logout') }}">
       <i class="material-icons mdl-text-color--blue-grey">settings_power</i>
