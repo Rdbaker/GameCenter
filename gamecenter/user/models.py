@@ -37,7 +37,7 @@ class User(UserMixin, CRUDMixin, SurrogatePK, db.Model):
     active = db.Column(db.Boolean(), default=False)
     is_admin = db.Column(db.Boolean(), default=False, nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
-    game = relationship("Game", backref=backref("requests"))
+    game = relationship("Game", backref=backref("user", uselist=False))
 
     def __init__(self, username, password=None, **kwargs):
         db.Model.__init__(self, username=username, **kwargs)
