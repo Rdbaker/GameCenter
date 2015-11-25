@@ -36,8 +36,8 @@ class User(UserMixin, CRUDMixin, SurrogatePK, db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     active = db.Column(db.Boolean(), default=False)
     is_admin = db.Column(db.Boolean(), default=False, nullable=False)
-    game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
-    game = relationship("Game", backref=backref("user", uselist=False))
+    game_id = db.Column(db.Integer, db.ForeignKey("games.id"))
+    game = relationship("Game", backref=backref("user", uselist=False), cascade="delete")
 
     def __init__(self, username, password=None, **kwargs):
         db.Model.__init__(self, username=username, **kwargs)
