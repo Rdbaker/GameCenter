@@ -12,7 +12,7 @@ First, set your app's secret key as an environment variable. For example, exampl
 
 .. code-block:: bash
 
-    export GAMECENTER_SECRET='something-really-secret'
+    export RANK_SECRET='something-really-secret'
 
 
 Then run the following commands to bootstrap your environment.
@@ -20,8 +20,8 @@ Then run the following commands to bootstrap your environment.
 
 ::
 
-    git clone https://github.com/rdbaker/gamecenter
-    cd gamecenter
+    git clone https://github.com/rdbaker/rank
+    cd rank
     pip install -r requirements/dev.txt
     npm install
     python manage.py server
@@ -42,7 +42,7 @@ Once you have installed your DBMS, run the following to create your app's databa
 Deployment
 ----------
 
-In your production environment, make sure the ``GAMECENTER_ENV`` environment variable is set to ``"prod"``.
+In your production environment, make sure the ``RANK_ENV`` environment variable is set to ``"prod"``.
 
 
 Shell

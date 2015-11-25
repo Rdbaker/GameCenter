@@ -3,7 +3,7 @@ from flask_wtf import Form
 from wtforms import TextField, PasswordField
 from wtforms.validators import DataRequired, EqualTo, Length
 
-from gamecenter.user.models import User
+from rank.user.models import User
 
 
 class RegisterForm(Form):

@@ -46,7 +46,7 @@ docs/_build
 env/
 
 # ignore the compiled slate files
-gamecenter/static/docs
+rank/static/docs
 
 postgres
 
@@ -54,4 +54,4 @@ postgres
 logs/*.json*
 
 # ignore the compiled JS files
-gamecenter/static/js
+rank/static/js

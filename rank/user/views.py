@@ -5,12 +5,12 @@ from flask import render_template, jsonify, g, redirect, url_for
 from flask_login import login_required, current_user
 
 from . import blueprint
-from gamecenter.api.models import UserRequest, Score
-from gamecenter.api.schema import UserRequestSchema, ScoreSchema
-from gamecenter.api.views import handle_api_key, get_unique_key
-from gamecenter.core.utils import InvalidUsage
-from gamecenter.user.models import User
-from gamecenter.user.schema import UserSchema
+from rank.api.models import UserRequest, Score
+from rank.api.schema import UserRequestSchema, ScoreSchema
+from rank.api.views import handle_api_key, get_unique_key
+from rank.core.utils import InvalidUsage
+from rank.user.models import User
+from rank.user.schema import UserSchema
 
 REQUESTSCHEMA = UserRequestSchema()
 SCORESCHEMA = ScoreSchema()

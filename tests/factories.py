@@ -3,7 +3,7 @@
 from factory import Sequence, PostGenerationMethodCall
 from factory.alchemy import SQLAlchemyModelFactory
 
-from gamecenter.database import db
+from rank.database import db
 
 
 class BaseFactory(SQLAlchemyModelFactory):

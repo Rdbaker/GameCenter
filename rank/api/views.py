@@ -10,12 +10,12 @@ from flask import jsonify, request, g
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import blueprint
-from gamecenter.api.models import Score, Game
-from gamecenter.api.schema import ScoreSchema, UserRequestSchema
-from gamecenter.core.models import DB
-from gamecenter.core.utils import InvalidUsage
-from gamecenter.api.helpers.meta import get_meta_from_args
-from gamecenter.api.helpers.get import (
+from rank.api.models import Score, Game
+from rank.api.schema import ScoreSchema, UserRequestSchema
+from rank.core.models import DB
+from rank.core.utils import InvalidUsage
+from rank.api.helpers.meta import get_meta_from_args
+from rank.api.helpers.get import (
     get_request_args,
     construct_and_
 )

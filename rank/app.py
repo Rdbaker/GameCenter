@@ -11,28 +11,28 @@ from flask import (
     request,
 )
 
-from gamecenter.api import views as api
-from gamecenter.api.models import Game
-from gamecenter.assets import assets
-from gamecenter.core import views as core
-from gamecenter.core.models import DB as db
-from gamecenter.core.utils import InvalidUsage
-from gamecenter.extensions import (
+from rank.api import views as api
+from rank.api.models import Game
+from rank.assets import assets
+from rank.core import views as core
+from rank.core.models import DB as db
+from rank.core.utils import InvalidUsage
+from rank.extensions import (
     cache,
     login_manager,
     migrate,
     debug_toolbar,
 )
-from gamecenter.logger import (
+from rank.logger import (
     RankErrFilter,
     RankErrFormatter,
     RankFilter,
     RankFormatter,
     RankTimedRotatingFileHandler,
 )
-from gamecenter.public import views as public
-from gamecenter.settings import ProdConfig
-from gamecenter.user import views as user
+from rank.public import views as public
+from rank.settings import ProdConfig
+from rank.user import views as user
 
 
 def create_app(config_object=ProdConfig):

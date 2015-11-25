@@ -6,7 +6,7 @@ import logging
 import arrow
 from flask import request, g
 
-from gamecenter.api.models import UserRequest
+from rank.api.models import UserRequest
 
 
 class RankTimedRotatingFileHandler(logging.handlers.TimedRotatingFileHandler):

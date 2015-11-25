@@ -8,8 +8,8 @@ import iso8601
 from flask import request
 from sqlalchemy import and_, or_
 
-from gamecenter.core.utils import InvalidUsage
-from gamecenter.api.models import Score
+from rank.core.utils import InvalidUsage
+from rank.api.models import Score
 
 DEFAULTS = {
     'page_size': 5,

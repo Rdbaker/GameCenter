@@ -5,8 +5,8 @@
 > Fetching the data:
 
 ```java
-import gamecenter
-client = GameCenterClient("myAPIKey");
+import rank
+client = RankClient("myAPIKey");
 ArrayList<Score> scores = client.getScores();
 ```
 
@@ -56,8 +56,8 @@ Parameter | Required | Type | Default | Description
 > Fetching the data:
 
 ```java
-import gamecenter
-client = GameCenterClient("myAPIKey");
+import rank
+client = RankClient("myAPIKey");
 int userId = 1;
 ArrayList<Score> scores = client.getUserScores(userId);
 ```
@@ -116,8 +116,8 @@ Parameter | Required | Type | Default | Description
 > Creating the score:
 
 ```java
-import gamecenter
-client = GameCenterClient("myAPIKey");
+import rank
+client = RankClient("myAPIKey");
 
 int user_id = 1;
 int score = 220;
@@ -164,8 +164,8 @@ Parameter | Required | Type | Description
 > Creating the score:
 
 ```java
-import gamecenter
-client = GameCenterClient("myAPIKey");
+import rank
+client = RankClient("myAPIKey");
 
 int user_id = 1;
 int score = 220;

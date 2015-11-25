@@ -3,9 +3,9 @@
 import pytest
 from webtest import TestApp
 
-from gamecenter.settings import TestConfig
-from gamecenter.app import create_app
-from gamecenter.database import db as _db
+from rank.settings import TestConfig
+from rank.app import create_app
+from rank.database import db as _db
 
 
 @pytest.yield_fixture(scope='function')

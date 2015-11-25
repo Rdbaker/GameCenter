@@ -1,7 +1,7 @@
 from flask.ext.testing import TestCase
 
-from gamecenter.app import create_app
-from gamecenter.settings import TestConfig
+from rank.app import create_app
+from rank.settings import TestConfig
 
 
 class BaseTestCase(TestCase):

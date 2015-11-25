@@ -1,8 +1,8 @@
 branch-defaults:
   master:
-    environment: GameCenter-dev
+    environment: Rank-dev
 global:
-  application_name: GameCenter
+  application_name: Rank
   default_ec2_keyname: aws-eb
   default_platform: Python 2.7
   default_region: us-east-1

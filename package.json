@@ -8,11 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Rdbaker/GameCenter.git"
+    "url": "git+https://github.com/Rdbaker/Rank.git"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Rdbaker/GameCenter/issues"
+    "url": "https://github.com/Rdbaker/Rank/issues"
   },
-  "homepage": "https://github.com/Rdbaker/GameCenter#readme"
+  "homepage": "https://github.com/Rdbaker/Rank#readme"
 }

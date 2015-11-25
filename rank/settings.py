@@ -7,7 +7,7 @@ os_env = os.environ
 
 class Config(object):
     # TODO: Change this to be a better secret key (if we even need one)
-    SECRET_KEY = os_env.get('GAMECENTER_SECRET', 'secret-key')
+    SECRET_KEY = os_env.get('RANK_SECRET', 'secret-key')
     HOST_URI = 'http://127.0.0.1:5000'
     APP_DIR = os.path.abspath(os.path.dirname(__file__))
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
@@ -34,7 +34,7 @@ class ProdConfig(Config):
 
 class DevConfig(Config):
     """Development configuration."""
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localuser:localpassword@localhost/gamecenter'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localuser:localpassword@localhost/rank'
     ENV = 'dev'
     DEBUG = True
     DEBUG_TB_PROFILER_ENABLED = True
@@ -52,7 +52,7 @@ class DevConfig(Config):
 class TestConfig(Config):
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localuser:localpassword@localhost/gamecenter_test'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localuser:localpassword@localhost/rank_test'
     BCRYPT_LOG_ROUNDS = 1  # For faster tests
     WTF_CSRF_ENABLED = False  # Allows form testing
     LOG_LEVEL = logging.DEBUG

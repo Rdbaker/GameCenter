@@ -6,14 +6,14 @@ from flask_script.commands import Clean, ShowUrls
 from flask_migrate import MigrateCommand, Migrate
 from flask.ext.sqlalchemy import sqlalchemy
 
-from gamecenter.app import create_app
-from gamecenter.settings import DevConfig, ProdConfig
-from gamecenter.core.models import Base, DB
+from rank.app import create_app
+from rank.settings import DevConfig, ProdConfig
+from rank.core.models import Base, DB
 
 DEFAULT_DB = 'postgres'
 CREATE_DB = 'create database %s'
 
-if os.environ.get("GAMECENTER_ENV") == 'prod':
+if os.environ.get("RANK_ENV") == 'prod':
     application = create_app(ProdConfig)
 else:
     application = create_app(DevConfig)
