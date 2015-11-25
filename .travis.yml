@@ -8,6 +8,7 @@ python:
 install: pip install -r requirements/dev.txt
 
 script:
+  - createuser localuser
   - python manage.py setup_db
   - python manage.py db upgrade
   - sh run_tests.sh 300
