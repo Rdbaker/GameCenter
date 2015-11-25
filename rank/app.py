@@ -5,11 +5,14 @@ import logging
 from flask import (
     current_app,
     Flask,
+    g,
     jsonify,
     render_template,
+    request,
 )
 
 from rank.api import views as api
+from rank.api.models import Game
 from rank.assets import assets
 from rank.core import views as core
 from rank.core.models import DB as db
@@ -58,6 +61,26 @@ def create_app(config_object=ProdConfig):
         """
         current_app.logger.info(str(resp.status_code))
         return resp
+
+    @app.before_request
+    def throttle():
+        """
+        Throttle the request if need be
+        """
+        if api.blueprint.url_prefix not in request.path:
+            # don't need to throttle these requests
+            return None
+        if "Authorization" not in request.headers:
+            # let somebody else handle this situation
+            return None
+        api_key = request.headers["Authorization"][7:]  # from the string form "Bearer <api_key>"
+        game = Game.query.filter(Game.api_key == api_key).first()
+        if not game:
+            # let somebody else handle this situation
+            return None
+        g.game = game
+        if game.user.request_count_today() >= app.config['THROTTLE_LIMIT']:
+            return handle_invalid_usage(InvalidUsage("Exceeded maximum API requests.", 429))
 
     return app
 

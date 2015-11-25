@@ -33,7 +33,7 @@ class Game(Base, CRUDMixin):
     :param string api_key: The api_key games use to talk to the api.
     """
     __tablename__ = "games"
-    api_key = db.Column(db.String, index=False, unique=True, nullable=False)
+    api_key = db.Column(db.String, index=True, unique=True, nullable=False)
     frozen = db.Column(db.Boolean, default=False, nullable=False)
 
 

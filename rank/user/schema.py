@@ -3,7 +3,7 @@
 from marshmallow import fields
 from marshmallow_sqlalchemy import ModelSchema
 
-from gamecenter.user.models import User
+from rank.user.models import User
 
 
 class UserSchema(ModelSchema):

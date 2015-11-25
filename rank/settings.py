@@ -17,6 +17,7 @@ class Config(object):
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
     LOG_LEVEL = logging.INFO
+    THROTTLE_LIMIT = 3600
 
 
 class ProdConfig(Config):
