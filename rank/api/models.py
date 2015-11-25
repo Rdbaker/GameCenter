@@ -34,6 +34,7 @@ class Game(Base, CRUDMixin):
     """
     __tablename__ = "games"
     api_key = db.Column(db.String, index=False, unique=True, nullable=False)
+    frozen = db.Column(db.Boolean, default=False, nullable=False)
 
 
 class UserRequest(Base, CRUDMixin):
@@ -47,7 +48,7 @@ class UserRequest(Base, CRUDMixin):
     :param int status: the integer response code sent to the client
     """
     __tablename__ = "requests"
-    time_requested = db.Column(db.DateTime, nullable=False, default=arrow.utcnow().datetime)
+    time_requested = db.Column(db.DateTime, nullable=False, default=lambda x: arrow.utcnow().datetime)
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
     game = relationship("Game", backref=backref("user_requests"))
     http_verb = db.Column(db.String, nullable=False)

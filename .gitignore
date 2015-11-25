@@ -51,7 +51,7 @@ rank/static/docs
 postgres
 
 # ignore the things inside of the log folder
-logs/*.json
+logs/*.json*
 
 # ignore the compiled JS files
 rank/static/js
