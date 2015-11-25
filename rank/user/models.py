@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime as dt
 
-import arrow
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship, backref
 
@@ -53,20 +52,20 @@ class User(UserMixin, CRUDMixin, SurrogatePK, db.Model):
         return bcrypt.check_password_hash(self.password, value)
 
     def requests_today(self):
-        midnight = arrow.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).datetime
+        midnight = dt.datetime.combine(dt.date.today(), dt.time())
         return UserRequest.query.filter(
             UserRequest.game_id == self.game.id,
             UserRequest.time_requested > midnight).order_by(UserRequest.time_requested.desc())
 
     def requests_this_week(self):
-        midnight = arrow.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).datetime
+        midnight = dt.datetime.combine(dt.date.today(), dt.time())
         seven_days_ago = midnight - dt.timedelta(days=7)
         return UserRequest.query.filter(
             UserRequest.game_id == self.game.id,
             UserRequest.time_requested > seven_days_ago).order_by(UserRequest.time_requested.desc())
 
     def request_count_today(self):
-        midnight = arrow.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).datetime
+        midnight = dt.datetime.combine(dt.date.today(), dt.time())
         return UserRequest.query.filter(
             UserRequest.game_id == self.game.id,
             UserRequest.time_requested > midnight).count()
