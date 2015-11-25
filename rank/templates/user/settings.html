@@ -15,6 +15,8 @@
     <span>
       If, for some reason, you need to change your API key.
       Click the button below to create a new one.
+      Please note that this will invalidate the current API key, and
+      all of your game clients must switch API keys.
     </span>
     <h5>
       Current API key: {{ current_user.game.api_key }}
@@ -26,6 +28,24 @@
     </div>
   </form>
 </div>
+
+<div class="mdl-card--colored mdl-shadow--4dp card-wide">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Delete Your Account</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <span>
+      This action is irreversible and all data will be lost. If you're still inclined
+      to delete your account, click the button below.
+    </span>
+  </div>
+  <form action="{{ url_for('user.delete_user', id=current_user.id) }}" method="POST">
+    <div class="mdl-card__actions mdl-card--border" id="request-count-card-actions">
+      <input type="submit" value="Delete" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent">
+    </div>
+  </form>
+</div>
+
 
 
 
