@@ -32,8 +32,11 @@ class LineChart
       .y((d) => @y(d))
 
   setChartAxes: =>
+    max = d3.max @chart_data
+    if @title == "Weekly Requests"
+      max = d3.max([4000, d3.max(@chart_data)])
     @x = d3.scale.linear().domain([0, @chart_data.length-1]).range([0, @chart_settings.width])
-    @y = d3.scale.linear().domain([0, d3.max([4000, d3.max(@chart_data)])]).range([@chart_settings.height, @chart_settings.title_height])
+    @y = d3.scale.linear().domain([0, max]).range([@chart_settings.height, @chart_settings.title_height])
     @x_axis = d3.svg.axis().scale(@x).orient('bottom').tickFormat(d3.format('d')).tickSubdivide(0)
     @y_axis = d3.svg.axis().scale(@y).orient('left').tickFormat(d3.format('d')).tickSubdivide(0)
 
@@ -70,10 +73,11 @@ class LineChart
       .attr 'fill', 'none'
 
     # draw the hard-coded throttle limit
-    throttle_line = (3600 for i in [1..@chart_data.length])
-    svg.append 'path'
-      .attr('d', @line_function()(throttle_line))
-      .attr 'stroke', 'steelblue'
-      .style 'stroke-dasharray', ('3, 3')
-      .attr 'stroke-width', 2
-      .attr 'fill', 'none'
+    if @title == "Weekly Requests"
+      throttle_line = (3600 for i in [1..@chart_data.length])
+      svg.append 'path'
+        .attr('d', @line_function()(throttle_line))
+        .attr 'stroke', 'steelblue'
+        .style 'stroke-dasharray', ('3, 3')
+        .attr 'stroke-width', 2
+        .attr 'fill', 'none'

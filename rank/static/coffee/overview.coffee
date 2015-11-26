@@ -1,17 +1,13 @@
 getApiKey = ->
   $('meta[name=api_key]')[0].content
 
-dailyChart = d3.select("#daily-chart").append("svg")
-  .attr("width", 960)
-  .attr("height", 500)
-
 changeGraph = (show) ->
   if show == 'daily'
-    $('#weekly-chart').hide()
-    $('#daily-chart').show()
+    $('#weekly-chart').addClass('hidden')
+    $('#daily-chart').removeClass('hidden')
   if show == 'weekly'
-    $('#daily-chart').hide()
-    $('#weekly-chart').show()
+    $('#weekly-chart').removeClass('hidden')
+    $('#daily-chart').addClass('hidden')
 
 setHeaders = (xhr) ->
   xhr.setRequestHeader('Authorization', "Bearer #{getApiKey()}")
@@ -44,15 +40,23 @@ getRequests = ->
       console.log data
 
 makeDailyChart = (requests) ->
-  $(dailyChart).empty()
-  console.log 'wow look at that chart!'
+  todaysHours = make2DArray 24
+  for req in requests
+    d = new Date(req.time_requested)
+    todaysHours[d.getUTCHours()] = todaysHours[d.getUTCHours()] + 1
+  lineFunction = d3.svg.line()
+    .x((d, i) -> x(i))
+    .y((d, i) -> y(d))
+    .interpolate("linear")
+  dailyChart = new LineChart todaysHours, 'Daily Requests', lineFunction
+  dailyChart.render('#daily-chart')
 
 makeWeeklyChart = (requests) ->
   past7Days = make2DArray 7
   now = new Date
   for req in requests
-    idx = diffDays(req.created_at, now)
-    past7Days[idx] = past7Days[idx]+1
+    idx = diffDays(req.time_requested, now)
+    past7Days[idx] = past7Days[idx] + 1
   lineFunction = d3.svg.line()
     .x((d, i) -> x(i))
     .y((d, i) -> y(d))
