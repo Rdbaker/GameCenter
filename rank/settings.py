@@ -25,8 +25,7 @@ class ProdConfig(Config):
     HOST_URI = 'https://tmwild.com'
     ENV = 'prod'
     DEBUG = False
-    # TODO: Change this to an os_env.get type thing to hide our DB URI
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/example'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{}:{}@{}:{}/{}'.format(os.environ["PGUSER"], os.environ["PGPASSWORD"], os.environ["PGHOST"], os.environ["PGPORT"], os.environ["PGDATABASE"])
     DEBUG_TB_ENABLED = False
     LOG_FILE = 'logs/prod_log.json'
     ERR_LOG = 'logs/prod_err_log.json'
@@ -34,7 +33,8 @@ class ProdConfig(Config):
 
 class DevConfig(Config):
     """Development configuration."""
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localuser:localpassword@localhost/rank'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql://localuser:localpassword@localhost/gamecenter'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{}:{}@{}:{}/{}'.format(os.environ["PGUSER"], os.environ["PGPASSWORD"], os.environ["PGHOST"], os.environ["PGPORT"], os.environ["PGDATABASE"])
     ENV = 'dev'
     DEBUG = True
     DEBUG_TB_PROFILER_ENABLED = True
