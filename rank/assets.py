@@ -26,9 +26,16 @@ dashboard_js_deps = Bundle(
 )
 
 overview_js = Bundle(
+    "coffee/charts.coffee",
     "coffee/overview.coffee",
     filters=['coffeescript'],
     output="public/js/overview.js"
+)
+
+overview_css = Bundle(
+    "sass/overview.sass",
+    filters=['sass'],
+    output="public/css/overview.css"
 )
 
 manage_js = Bundle(
@@ -62,6 +69,7 @@ assets.register("js_all", js)
 assets.register("css_all", css)
 assets.register("dashboard_js_deps", dashboard_js_deps)
 assets.register("overview_js", overview_js)
+assets.register("overview_css", overview_css)
 assets.register("manage_js", manage_js)
 assets.register("dashboard_css", dashboard_css)
 assets.register("manage_css", manage_css)

@@ -45,8 +45,8 @@ class DevConfig(Config):
     ASSETS_DEBUG = True
     CACHE_TYPE = 'simple'
     LOG_LEVEL = logging.DEBUG
-    LOG_FILE = 'logs/lcl_log.json'
-    ERR_LOG = 'logs/lcl_err_log.json'
+    LOG_FILE = 'logs/dev_log.json'
+    ERR_LOG = 'logs/dev_err_log.json'
 
 
 class TestConfig(Config):

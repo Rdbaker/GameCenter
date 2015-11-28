@@ -14,8 +14,8 @@ class RankTimedRotatingFileHandler(logging.handlers.TimedRotatingFileHandler):
     Handles our log with care so the poor child knows where to go
 
     It will change what is appended to the filename based on the time it's rotated.
-    Suffixes will appear in the form %Y-%m-%d_%H-%M-%S E.g.:
-    /var/log/rank/log-2015-11-04_00-00-00
+    Suffixes will appear in the form %Y-%m-%d E.g.:
+    /var/log/rank/log-2015-11-04
 
     Every midnight, the logs rotate to a new file
     """

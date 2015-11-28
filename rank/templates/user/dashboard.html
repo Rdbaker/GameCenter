@@ -1,7 +1,14 @@
 {% extends "user/layout.html" %}
 
+{% block css %}
+  {% assets "overview_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
+{% endblock %}
+
 {% block js %}
 {% assets "overview_js" %}
+    <script src="//d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 {% endblock %}
@@ -39,7 +46,8 @@
     </label>
   </div>
   <div class="mdl-card__supporting-text request-card-content">
-    A big chart will go here
+    <div id="weekly-chart"></div>
+    <div id="daily-chart" class="hidden"></div>
   </div>
 </div>
 

@@ -22,8 +22,8 @@ class Score(Base):
     tag = db.Column(db.String, index=True)
     created_at = db.Column(db.DateTime, nullable=False, default=arrow.utcnow().datetime)
 
-    game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
-    game = relationship("Game", backref=backref("scores"))
+    game_id = db.Column(db.Integer, db.ForeignKey("games.id"))
+    game = relationship("Game", backref=backref("scores"), cascade="delete-orphan, delete", single_parent=True)
 
 
 class Game(Base, CRUDMixin):
@@ -49,8 +49,8 @@ class UserRequest(Base, CRUDMixin):
     """
     __tablename__ = "requests"
     time_requested = db.Column(db.DateTime, nullable=False, default=lambda x: arrow.utcnow().datetime)
-    game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
-    game = relationship("Game", backref=backref("user_requests"))
+    game_id = db.Column(db.Integer, db.ForeignKey("games.id"))
+    game = relationship("Game", backref=backref("user_requests"), cascade="delete-orphan, delete", single_parent=True)
     http_verb = db.Column(db.String, nullable=False)
     uri = db.Column(db.String, nullable=False)
     status = db.Column(db.Integer, nullable=False)
