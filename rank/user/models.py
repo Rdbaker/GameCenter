@@ -60,15 +60,23 @@ class User(UserMixin, CRUDMixin, SurrogatePK, db.Model):
     def requests_this_week(self):
         midnight = dt.datetime.combine(dt.date.today(), dt.time())
         seven_days_ago = midnight - dt.timedelta(days=7)
-        return UserRequest.query.filter(
-            UserRequest.game_id == self.game.id,
-            UserRequest.time_requested > seven_days_ago).order_by(UserRequest.time_requested.desc())
+        if not self.is_admin:
+            return UserRequest.query.filter(
+                UserRequest.game_id == self.game.id,
+                UserRequest.time_requested > seven_days_ago).order_by(UserRequest.time_requested.desc())
+        else:
+            return UserRequest.query.filter(
+                UserRequest.time_requested > seven_days_ago).order_by(UserRequest.time_requested.desc())
 
     def request_count_today(self):
         midnight = dt.datetime.combine(dt.date.today(), dt.time())
-        return UserRequest.query.filter(
-            UserRequest.game_id == self.game.id,
-            UserRequest.time_requested > midnight).count()
+        if not self.is_admin:
+            return UserRequest.query.filter(
+                UserRequest.game_id == self.game.id,
+                UserRequest.time_requested > midnight).count()
+        else:
+            return UserRequest.query.filter(
+                UserRequest.time_requested > midnight).count()
 
     def __repr__(self):
         return '<User({username!r})>'.format(username=self.username)

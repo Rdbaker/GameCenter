@@ -1,0 +1,46 @@
+{% extends "user/layout.html" %}
+
+{% block css %}
+  {% assets "health_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
+{% endblock %}
+
+{% block js %}
+    <script src="//d3js.org/d3.v3.min.js"></script>
+{% assets "overview_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+
+{% block content %}
+<div class="card-wide mdl-card mdl-shadow--4dp">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Request Frequency Breakdown</h2>
+  </div>
+  <div id="distribution-selection">
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="weekly">
+      <input type="radio" id="weekly" class="mdl-radio__button" name="distribution-frequency" value="weekly" checked>
+      <span class="mdl-radio__label">This Week</span>
+    </label>
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="daily">
+      <input type="radio" id="daily" class="mdl-radio__button" name="distribution-frequency" value="daily">
+      <span class="mdl-radio__label">This Day</span>
+    </label>
+  </div>
+  <div class="mdl-card__supporting-text request-card-content">
+    <div id="weekly-chart"></div>
+    <div id="daily-chart" class="hidden"></div>
+  </div>
+</div>
+
+<div class="card-wide mdl-card mdl-shadow--4dp">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Server Health Link</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    For information on the server health link please <h5 class="inline"><a href="/static/docs/index.html">Consult the API doucmentation</a></h5>
+  </div>
+</div>
+
+{% endblock %}

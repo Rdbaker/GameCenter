@@ -116,6 +116,25 @@ def manage_data(user_id):
         scores=[SCORESCHEMA.dump(score).data for score in Score.query.filter(Score.game == user.game)])
 
 
+@blueprint.route("/healthandmetrics")
+@login_required
+def metrics():
+    if not current_user.is_admin:
+        raise InvalidUsage("Forbidden", 403)
+    return render_template("user/admin/health.html", num_users=User.query.filter(User.is_admin == False).count())
+
+
+@blueprint.route("/promoteuser/<int:id>", methods=["POST"])
+@login_required
+def promote_to_admin(id):
+    if not current_user.is_admin:
+        raise InvalidUsage("Forbidden", 403)
+    user = User.get_by_id(id)
+    user.is_admin = True
+    user.save()
+    return redirect(url_for('user.metrics'))
+
+
 @blueprint.route('/requests', methods=['GET'])
 @handle_api_key
 def requests_controller():

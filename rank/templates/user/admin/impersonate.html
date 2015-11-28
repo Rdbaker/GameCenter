@@ -23,11 +23,12 @@
         <td>{{ user.username }}</td>
         <td>{{ user.requests_today }}</td>
         <td>{{ user.frozen }}</td>
-        <td>
+        <td class="table-button">
           <form method="GET" action="{{ url_for('user.manage_data', user_id=user.id) }}">
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary">View Data</button>
           </form>
-        <td>
+        </td>
+        <td class="table-button">
           <form method="POST" action="{{ url_for('user.freeze_user', user_id=user.id) }}">
             {% if user.frozen %}
               <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary">Unfreeze</button>
@@ -36,12 +37,16 @@
             {% endif %}
           </form>
         </td>
-        <td>
+        <td class="table-button">
           <form method="POST" action="{{ url_for('user.delete_user', id=user.id) }}">
             <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent">DELETE</button>
           </form>
         </td>
-
+        <td class="table-button">
+          <form method="POST" action"{{ url_for('user.promote_to_admin', id=user.id) }}">
+            <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent">Make Admin</button>
+          </form>
+        </td>
       </tr>
       {% endfor %}
     </tbody>

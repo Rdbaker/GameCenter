@@ -16,6 +16,7 @@
   <meta name="description" content="{% block meta_description %}{% endblock %}">
   <meta name="author" content="{% block meta_author %}{% endblock %}">
   <meta name="api_key" content="{{ current_user.game.api_key }}">
+  <meta name="num_users" content="{{ num_users or 1 }}">
   {% block meta %}{% endblock %}
 
   <!-- Mobile viewport optimized: h5bp.com/viewport -->
