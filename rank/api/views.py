@@ -64,7 +64,16 @@ def get_unique_key():
 @handle_api_key
 @get_request_args
 def leaderboards_controller(args):
-    return get_paginated_scores(args)
+    order = Score.score.desc()
+    if args['sort'] == 'ascending':
+        order = Score.score
+    res_set = Score.query.order_by(order).filter(construct_and_(args))
+    return scores_from_query(
+        result_set=res_set.offset(args['offset'] - 1).limit(args['page_size']),
+        args=args,
+        endpoint='leaderboards',
+        count=res_set.count(),
+    )
 
 
 @blueprint.route('/add_score', methods=['POST'])
@@ -98,19 +107,7 @@ def add_score_and_list_controller(args):
     return scores_from_query(
         result_set=q.offset(offset).limit(2 * args['radius'] + 1),
         args=args,
-    )
-
-
-def get_paginated_scores(args):
-    """Get a list of paginated scores."""
-    order = Score.score.desc()
-    if args['sort'] == 'ascending':
-        order = Score.score
-    res_set = Score.query.order_by(order).filter(construct_and_(args))
-    return scores_from_query(
-        result_set=res_set.offset(args['offset'] - 1).limit(args['page_size']),
-        args=args,
-        count=res_set.count(),
+        endpoint='add_score_and_list',
     )
 
 
@@ -130,8 +127,8 @@ def create_entry():
     return results
 
 
-def scores_from_query(result_set, args, count=None):
+def scores_from_query(result_set, args, endpoint, count=None):
     res = [SCORESCHEMA.dump(score).data for score in result_set]
     if count is None:
         count = len(res)
-    return jsonify(data=res, meta=get_meta_from_args(count, args))
+    return jsonify(data=res, meta=get_meta_from_args(count, args, endpoint))
