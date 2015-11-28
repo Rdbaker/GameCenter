@@ -82,6 +82,11 @@ def add_score_controller():
     return jsonify(data=SCORESCHEMA.dump(create_entry()).data)
 
 
+@blueprint.route('/health', methods=['GET'])
+def health():
+    return jsonify(status="healthy")
+
+
 @blueprint.route('/add_score_and_list', methods=['POST'])
 @handle_api_key
 @get_request_args
