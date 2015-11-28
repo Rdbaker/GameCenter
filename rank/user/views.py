@@ -67,6 +67,8 @@ def delete_user(id):
     if id == current_user.id:
         raise InvalidUsage("You can't delete yourself!")
     user = User.query.filter(User.id == id).first()
+    if user.is_admin:
+        raise InvalidUsage("You can't delete an admin!")
     user.delete()
     return redirect(url_for('user.settings'))
 
@@ -132,7 +134,7 @@ def promote_to_admin(id):
     user = User.get_by_id(id)
     user.is_admin = True
     user.save()
-    return redirect(url_for('user.metrics'))
+    return redirect(url_for('user.settings'))
 
 
 @blueprint.route('/requests', methods=['GET'])
