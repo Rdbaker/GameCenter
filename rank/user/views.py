@@ -74,7 +74,6 @@ def delete_user(id):
 @blueprint.route("/deletescores", methods=['POST'])
 @login_required
 def delete_scores():
-    print request.form
     user_id = request.form['user_id']
     score_id = request.form['score_id']
     tag = request.form['tag']
