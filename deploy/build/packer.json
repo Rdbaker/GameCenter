@@ -13,7 +13,7 @@
       "inline": [
         "sleep 30",
         "sudo apt-get update",
-        "sudo apt-get install -y python-dev python-pip nginx upstart ruby node",
+        "sudo apt-get install -y python-dev python-pip nginx upstart ruby node npm",
         "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postfix libpq-dev",
         "sudo gem install sass",
         "sudo npm install coffee-script -g",
