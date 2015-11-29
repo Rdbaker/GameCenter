@@ -1,0 +1,38 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "us-west-2",
+    "source_ami": "ami-5189a661",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "rank-{{timestamp}}"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "sudo apt-get update",
+        "sudo apt-get install -y python-dev python-pip nginx upstart",
+        "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postfix libpq-dev",
+        "sudo mkdir -p /opt/rank/",
+        "sudo chown ubuntu /opt/rank"
+      ]
+    }, {
+      "type": "file",
+      "source": "../rank",
+      "destination": "/opt"
+    }, {
+      "type": "shell",
+      "inline": [
+        "sudo ls -al /opt/rank/",
+        "sudo pip install -r /opt/rank/requirements/prod.txt",
+        "sudo mv /opt/rank/deploy/nginx.conf /etc/nginx/sites-available/default",
+        "sudo rm /etc/nginx/sites-enabled/default",
+        "sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default",
+        "sudo mv /opt/rank/deploy/upstart.conf /etc/init/rank.conf",
+        "sudo chmod +x /opt/rank/deploy/run_rank.sh"
+      ]
+    }
+  ]
+}
