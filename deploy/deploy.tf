@@ -1,8 +1,8 @@
 variable "config" {
     default = {
         vpc_id = "vpc-b91664dc"
-        key_name = "mperrone"
-        ami = "ami-74425015"
+        key_name = "rdbmjpshared"
+        ami = "ami-ec7e6c8d"
         app_name = "rank"
     }
 }
