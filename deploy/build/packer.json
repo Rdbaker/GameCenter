@@ -13,8 +13,10 @@
       "inline": [
         "sleep 30",
         "sudo apt-get update",
-        "sudo apt-get install -y python-dev python-pip nginx upstart",
+        "sudo apt-get install -y python-dev python-pip nginx upstart ruby node",
         "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postfix libpq-dev",
+        "sudo gem install sass",
+        "sudo npm install coffee-script -g",
         "sudo mkdir -p /opt/rank/",
         "sudo chown ubuntu /opt/rank"
       ]
