@@ -116,3 +116,22 @@ returned, see [the error section](/static/docs/index.html?#errors) below.
 ##Date Format
 All of the dates in requests and responses are to be interpretted as UTC. They
 must be in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format `YYYY-MM-DDTHH:mm:ss` for example: `"1994-03-06T23:45:11"`.
+
+##Java Client
+To use the Java client, the setup includes importing the library and
+instantiating a client using your API key. We'll assume these steps
+have been taken for all of the example code.
+
+```java
+import rank.*;
+RankClient client = RankClient("myAPIKey");
+```
+
+Further, every function saving or listing will throw an `IOException`, which
+can be inspected (ioe.getMessage()) to see what the problem was. They map to
+the Rank API Error Codes.
+
+The Java Client library uses pagination in a similar way to the raw HTTP API.
+A ScoreList represents one page of responses (and can be iterated over), and
+to get other pages, use scoreList.next() and scoreList.previous(). They return
+null if there are no such pages.

@@ -1,6 +1,6 @@
 # Errors
 
-The Leaderboard API uses the following error codes:
+The Rank API uses the following error codes:
 
 
 Error Code | Meaning
