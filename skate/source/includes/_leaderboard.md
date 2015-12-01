@@ -5,9 +5,11 @@
 > Fetching the data:
 
 ```java
-import rank
-client = RankClient("myAPIKey");
-ArrayList<Score> scores = client.getScores();
+Sort sort = Sort.ASCENDING;
+String tag = "level one";
+Date startDate = null;
+Date endDate = null;
+ScoreList scores = client.getTopScores(sort, tag, startDate, endDate);
 ```
 
 ```shell
@@ -56,10 +58,12 @@ Parameter | Required | Type | Default | Description
 > Fetching the data:
 
 ```java
-import rank
-client = RankClient("myAPIKey");
-int userId = 1;
-ArrayList<Score> scores = client.getUserScores(userId);
+int[] userIds = new int[]{13, 14};
+Sort sort = Sort.ASCENDING;
+String tag = "level one";
+Date startDate = null;
+Date endDate = null;
+ScoreList scores = client.getUserScores(userIds, sort, tag, startDate, endDate);
 ```
 
 ```shell
@@ -116,14 +120,12 @@ Parameter | Required | Type | Default | Description
 > Creating the score:
 
 ```java
-import rank
-client = RankClient("myAPIKey");
-
-int user_id = 1;
+int userId = 1;
 int score = 220;
 String tag = "level two";
 
-Score s = client.newScore(user_id, score, tag);
+Score s = new Score(userId, score, tag);
+client.saveScore(s);
 ```
 
 ```shell
@@ -164,15 +166,13 @@ Parameter | Required | Type | Description
 > Creating the score:
 
 ```java
-import rank
-client = RankClient("myAPIKey");
-
-int user_id = 1;
+int userId = 1;
 int score = 220;
 String tag = "level two";
-int radius = 2;
+Score s = new Score(userId, score, tag);
 
-ArrayList<Score> scores = client.newScoreAndList(user_id, score, tag, radius);
+int radius = 2;
+ScoreList scores = client.saveScoreAndList(user_id, score, tag, radius);
 ```
 
 ```shell
