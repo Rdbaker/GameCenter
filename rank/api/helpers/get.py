@@ -5,7 +5,7 @@ from functools import wraps
 import json
 
 import iso8601
-from flask import request
+from flask import request, g
 from sqlalchemy import and_, or_
 
 from rank.core.utils import InvalidUsage
@@ -24,6 +24,7 @@ DEFAULTS = {
 def construct_and_(args):
     """Construct the 'and_' clause for a sqlalchemy query"""
     conditions = [
+        Score.game == g.game,
         Score.created_at >= args['start_date'],
         Score.created_at <= args['end_date']
     ]
