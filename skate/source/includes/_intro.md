@@ -135,3 +135,21 @@ The Java Client library uses pagination in a similar way to the raw HTTP API.
 A ScoreList represents one page of responses (and can be iterated over), and
 to get other pages, use scoreList.next() and scoreList.previous(). They return
 null if there are no such pages.
+
+###Installation - Eclipse
+* First [download the
+dependencies](https://developers.google.com/api-client-library/java/google-http-java-client/setup),
+the .zip file.
+* Then unzip it somewhere reasonable.
+* Then go to eclipse and right click on your project in the Package Explorer
+* Select "Build Path" > "Configure Build Path" > "Add External Jars..."
+* Navigate to the directory where you unzipped the dependencies, then
+  google-http-java-client/libs/ and select:
+    1. google-http-client-<version number>.jar
+    2. google-http-client-jackson<version number>.jar
+    3. jackson-core-<version number>.jar
+* Click "open"
+* Hit "okay"
+* Dance
+
+
