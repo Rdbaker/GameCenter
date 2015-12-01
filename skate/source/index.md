@@ -19,9 +19,3 @@ includes:
 search: true
 ---
 
-
-#TODO
-- Change the Java code to match the client, when that's done.
-- Factor out the imports in the example java code into the intro somewhere.
-  Maybe do the same with cURL auth code with env vars?
-- Add instructions on how to get an API key once that's solidified

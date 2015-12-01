@@ -58,6 +58,10 @@ curl -H "Authorization: Bearer $TOKEN" "https://tmwild.com/api/leaderboards"
 Each request must be made with a valid API Key. You must send a bearer
 authorization header with your request. The Java client handles this for you.
 
+To get your API key, sign up on the homepage of this website, then sign in to the dashboard.
+Once in the dashboard, click on the "settings" tab and you will be taken to a page where you can
+see your API key.
+
 
 ##Meta
 
