@@ -34,7 +34,6 @@ getRequests = ->
     method: 'GET'
   $.ajax(options)
     .done (data) ->
-      $('#requests-made').html(data.data.daily_reqs.length)
       makeCharts(data.data) if chartsNotInitialized
     .fail (data) ->
       console.log data
@@ -48,7 +47,7 @@ makeDailyChart = (requests) ->
     .x((d, i) -> x(i))
     .y((d, i) -> y(d))
     .interpolate("linear")
-  dailyChart = new LineChart todaysHours, 'Daily Requests', lineFunction
+  dailyChart = new LineChart todaysHours, 'Daily Requests'
   dailyChart.render('#daily-chart')
 
 makeWeeklyChart = (requests) ->
@@ -61,11 +60,10 @@ makeWeeklyChart = (requests) ->
     .x((d, i) -> x(i))
     .y((d, i) -> y(d))
     .interpolate("linear")
-  weeklyChart = new LineChart past7Days.reverse(), 'Weekly Requests', lineFunction
+  weeklyChart = new LineChart past7Days.reverse(), 'Weekly Requests', (3600 * Number($('meta[name=num_users]')[0].content))
   weeklyChart.render('#weekly-chart')
 
 $ ->
   getRequests()
-  setInterval(getRequests, 3000)
   $('#daily').on('click', () -> changeGraph('daily'))
   $('#weekly').on('click', () -> changeGraph('weekly'))
