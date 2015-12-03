@@ -2,7 +2,7 @@ variable "config" {
     default = {
         vpc_id = "vpc-b91664dc"
         key_name = "rdbmjpshared"
-        ami = "ami-ec7e6c8d"
+        ami = "ami-17a5b776"
         app_name = "rank"
     }
 }
