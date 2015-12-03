@@ -34,6 +34,7 @@ getRequests = ->
     method: 'GET'
   $.ajax(options)
     .done (data) ->
+      $('#requests-made').html(data.data.daily_reqs.length)
       makeCharts(data.data) if chartsNotInitialized
     .fail (data) ->
       console.log data
@@ -55,7 +56,8 @@ makeWeeklyChart = (requests) ->
   now = new Date
   for req in requests
     idx = diffDays(req.time_requested, now)
-    past7Days[idx] = past7Days[idx] + 1
+    if idx < 7
+      past7Days[idx] = past7Days[idx] + 1
   lineFunction = d3.svg.line()
     .x((d, i) -> x(i))
     .y((d, i) -> y(d))

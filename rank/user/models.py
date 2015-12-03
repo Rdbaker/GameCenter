@@ -53,9 +53,13 @@ class User(UserMixin, CRUDMixin, SurrogatePK, db.Model):
 
     def requests_today(self):
         midnight = dt.datetime.combine(dt.date.today(), dt.time())
-        return UserRequest.query.filter(
-            UserRequest.game_id == self.game.id,
-            UserRequest.time_requested > midnight).order_by(UserRequest.time_requested.desc())
+        if not self.is_admin:
+            return UserRequest.query.filter(
+                UserRequest.game_id == self.game.id,
+                UserRequest.time_requested > midnight).order_by(UserRequest.time_requested.desc())
+        else:
+            return UserRequest.query.filter(
+                UserRequest.time_requested > midnight).order_by(UserRequest.time_requested.desc())
 
     def requests_this_week(self):
         midnight = dt.datetime.combine(dt.date.today(), dt.time())
