@@ -13,12 +13,11 @@
       "inline": [
         "sleep 30",
         "sudo apt-get update",
-        "sudo apt-get install -y python-dev python-pip nginx upstart ruby node npm",
+        "sudo apt-get install -y python-dev python-pip nginx upstart ruby node npm bundler",
         "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postfix libpq-dev",
         "sudo npm install n -g",
         "sudo n 0.12.7",
         "sudo gem install sass",
-        "sudo npm install coffee-script -g",
         "sudo mkdir -p /opt/rank/",
         "sudo chown ubuntu /opt/rank"
       ]
@@ -35,7 +34,11 @@
         "sudo rm /etc/nginx/sites-enabled/default",
         "sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default",
         "sudo mv /opt/rank/deploy/upstart.conf /etc/init/rank.conf",
-        "sudo chmod +x /opt/rank/deploy/run_rank.sh"
+        "sudo chmod +x /opt/rank/deploy/run_rank.sh",
+        "sudo rm -rf /opt/rank/rank/static/css/* /opt/rank/rank/static/js/*",
+        "cd /opt/rank/skate/; bundle install",
+        "cd /opt/rank/skate/; bundle exec middleman build",
+        "cd /opt/rank/; npm install"
       ]
     }
   ]
