@@ -7,9 +7,14 @@ register_filter(Browserify)
 
 css = Bundle(
     "libs/bootstrap/dist/css/bootstrap.css",
-    "css/style.css",
     filters="cssmin",
     output="public/css/common.css"
+)
+
+other_css = Bundle(
+    "sass/style.sass",
+    filters=["sass"],
+    output="public/css/style.css"
 )
 
 js = Bundle(
@@ -72,6 +77,7 @@ assets = Environment()
 
 assets.register("js_all", js)
 assets.register("css_all", css)
+assets.register("other_css", other_css)
 assets.register("dashboard_js_deps", dashboard_js_deps)
 assets.register("overview_js", overview_js)
 assets.register("overview_css", overview_css)
