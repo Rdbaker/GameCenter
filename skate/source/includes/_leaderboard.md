@@ -170,9 +170,10 @@ int userId = 1;
 int score = 220;
 String tag = "level two";
 Score s = new Score(userId, score, tag);
+String filterTag = tag;
 
 int radius = 2;
-ScoreList scores = client.saveScoreAndList(user_id, score, tag, radius);
+ScoreList scores = client.saveScoreAndList(s, radius, Sort.ASCENDING, filterTag);
 ```
 
 ```shell

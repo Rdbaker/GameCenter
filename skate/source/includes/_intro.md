@@ -156,4 +156,9 @@ the .zip file.
 * Hit "okay"
 * Dance
 
+<aside class="warning">
+Make sure that, when initially creating the project, the execution environment JRE
+you select for use is version 1.8.
+</aside>
+
 
