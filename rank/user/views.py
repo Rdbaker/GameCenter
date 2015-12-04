@@ -7,7 +7,7 @@ from flask_login import login_required, current_user, logout_user
 from . import blueprint
 from rank.api.models import UserRequest, Score
 from rank.api.schema import UserRequestSchema, ScoreSchema
-from rank.api.views import handle_api_key, get_unique_key
+from rank.api.views import get_unique_key
 from rank.core.models import DB
 from rank.core.utils import InvalidUsage
 from rank.user.models import User
@@ -138,7 +138,7 @@ def promote_to_admin(id):
 
 
 @blueprint.route('/requests', methods=['GET'])
-@handle_api_key
+@login_required
 def requests_controller():
     weekly_reqs = [REQUESTSCHEMA.dump(req).data for req in current_user.requests_this_week()]
     daily_reqs = [REQUESTSCHEMA.dump(req).data for req in current_user.requests_today()]
