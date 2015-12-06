@@ -51,5 +51,9 @@ postgres
 # ignore the things inside of the log folder
 logs/*.json*
 
-# ignore the compiled JS files
+# ignore the compiled static files
 rank/static/js
+rank/static/css
+
+# ignore the admin creds
+.admin.yml

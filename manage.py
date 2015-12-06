@@ -6,6 +6,7 @@ from flask_script.commands import Clean, ShowUrls
 from flask_migrate import MigrateCommand, Migrate
 from flask.ext.sqlalchemy import sqlalchemy
 
+import seed_db
 from rank.app import create_app
 from rank.settings import DevConfig, ProdConfig
 from rank.core.models import Base, DB
@@ -52,6 +53,15 @@ def setup_db():
     test_db = local_db + '_test'
     conn.execute(CREATE_DB % test_db)
     conn.close()
+
+
+@manager.command
+def seed_database():
+    """Seed the database with the admins"""
+    if os.path.isfile('.admin.yml'):
+        seed_db.seed_admin('.admin.yml')
+    else:
+        raise Exception("No .admin.yml file was found in the top level directory.")
 
 
 manager.add_command('server', Server())
