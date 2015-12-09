@@ -35,3 +35,7 @@ resource "aws_db_instance" "rankdb" {
     password = "${var.pgpass}"
     vpc_security_group_ids = ["${aws_security_group.allow_db.id}"]
 }
+
+output "PGHOST" {
+    value = "${aws_db_instance.rankdb.address}"
+}
