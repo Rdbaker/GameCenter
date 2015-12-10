@@ -50,8 +50,8 @@ resource "aws_elb" "rankelb" {
 }
 resource "aws_autoscaling_group" "server-group" {
     name = "${var.config.app_name}-server-group"
-    min_size = 2
-    max_size = 10
+    min_size = 1
+    max_size = 5
     health_check_type = "ELB"
     health_check_grace_period = 100
     availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
