@@ -95,37 +95,6 @@ terraform --version
 packer --version
 ```
 
-##Build the server image
-
-Packer will create an AWS server instance, configure it to act as a rank server,
-then kill the instance but save a machine image. Do this by running:
-
-```
-cd ~/rank/
-packer build deploy/build/packer.json
-```
-
-It will take maybe 5 minutes to build the machine image. When it is done it will
-output something like:
-
-```
-...
---> amazon-ebs: AMIs were created:
-
-us-west-2: ami-f7bba696
-```
-
-Take the ami id (ami-f7bba696 in this case) and edit the file
-`~/rank/deploy/conf.sh`
-
-```
-# change this line:
-export TF_VAR_amiid=""
-# to (your ami id):
-export TF_VAR_amiid="ami-f7bba696"
-```
-
-
 ##Create the Hosted Zone
 
 Since MyDomain.com manages the tmwild.com domain, we have to find out which Name
@@ -158,6 +127,7 @@ those name servers the authority on tmwild.com records.
 
 
 ##Set up the database
+
 We need to spin up the database and configure/migrate it to be ready to be used
 by the server.
 
@@ -216,6 +186,37 @@ Then run these commands:
 cd ~/rank/
 python manage.py db upgrade
 python manage.py seed_database
+```
+
+
+##Build the server image
+
+Packer will create an AWS server instance, configure it to act as a rank server,
+then kill the instance but save a machine image. Do this by running:
+
+```
+cd ~/rank/
+packer build deploy/build/packer.json
+```
+
+It will take maybe 5 minutes to build the machine image. When it is done it will
+output something like:
+
+```
+...
+--> amazon-ebs: AMIs were created:
+
+us-west-2: ami-f7bba696
+```
+
+Take the ami id (ami-f7bba696 in this case) and edit the file
+`~/rank/deploy/conf.sh`
+
+```
+# change this line:
+export TF_VAR_amiid=""
+# to (your ami id):
+export TF_VAR_amiid="ami-f7bba696"
 ```
 
 
