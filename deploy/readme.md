@@ -26,6 +26,22 @@ IAM is the AWS service that gives different "Users" which have different permiss
 6. Tab over to "Permissions"
 7. Click "Attach Policy" and attach the "AdministratorAccess" policy.
 
+
+##Create a (ubuntu) server
+EC2 is the AWS service that allows a user to create a virtual server and ssh into said server to do with it what they wish. We need to make a ubuntu server that will allow us to set up the rest of the infrastructure with a few simple commands.
+
+1. Navigate to the [EC2 console](https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2)
+2. Click the "Launch Instance" button under the "Create Instance" heading.
+3. Click the "Select" button for the Ubuntu Amazon Machine Image (AMI).
+4. Select the size of the server you want, then click "Review and Launch" at the bottom.
+5. Click "Launch" at the bottom right of the screen.
+6. On the modal that pops up next, choose a key pair that you will use to ssh into the machine. If you do not have a key pair created, create a new one and download it to your machine.
+7. Click "Launch Instance"
+8. Click the "View Instances" button.
+9. Click on the recently launched instance. This will bring up an accordion on the bottom of the page. Take note of the value of the "Public IP" row.
+10. ssh into the server once it is ready (`ssh -i /path/to/keypair.pem ubuntu@<the public IP address>`)
+
+
 ##Configuration of your (ubuntu) machine
 
 ###AWS keys
