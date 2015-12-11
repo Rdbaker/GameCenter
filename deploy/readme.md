@@ -12,7 +12,7 @@ console.](https://us-west-2.console.aws.amazon.com/console/home?region=us-west-2
 
 
 ##Creating an IAM user
-IAM is the AWS service that gives different "Users" which have different permissions to use the AWS account. We need to make an User that we can use to build and deploy the server.
+IAM is the AWS service that gives different "Users" which have different permissions to use the AWS account. We need to make a User that we can use to build and deploy the server.
 
 1. Navigate to the [IAM User
    view](https://console.aws.amazon.com/iam/home?#users)
@@ -146,7 +146,7 @@ by the server.
 ###Deploy database
 
 First we need to create a database password since we can't store that in git. Edit
-the databse config file at `~/rank/deploy/conf.sh` and add a password to the line:
+the database config file at `~/rank/deploy/conf.sh` and add a password to the line:
 
 ```
 export PGPASSWORD=""
@@ -257,5 +257,11 @@ cd ~/rank/deploy/
 terraform apply
 ```
 
-DONE, it may take a minute or so for the DNS record for tmwild to catch up, but
-then everything should be set up.
+
+##Stop the ubuntu instance
+That's it! Everything should work (tmwild.com DNS record may take a few minutes
+to catch up), so we can stop the ubuntu instance to minimize costs. Go to the
+[EC2
+dashboard](https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#Instances:sort=instanceState)
+and find the instance. Select it, and click "Actions" > "Instance State" "Stop".
+You can start it again later if you need to destroy or modify the AWS resources.
