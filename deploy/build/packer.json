@@ -17,6 +17,7 @@
         "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postfix libpq-dev",
         "sudo npm install n -g",
         "sudo n 0.12.7",
+        "sudo npm install coffee-script -g",
         "sudo gem install sass",
         "sudo mkdir -p /opt/rank/",
         "sudo chown ubuntu /opt/rank"
