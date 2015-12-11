@@ -1,7 +1,3 @@
-This setup guide was ran on a clean ubuntu 14.04 LTS image. For best results,
-use the same. You can use a VM, an existing machine, or any other method you're
-comfortable with.
-
 This setup guide refers to the AWS UI as it was in December 2015. For best
 results, go back in time or interpret the instructions to the best of your
 ability given the changes in the UI.
@@ -35,11 +31,11 @@ EC2 is the AWS service that allows a user to create a virtual server and ssh int
 3. Click the "Select" button for the Ubuntu Amazon Machine Image (AMI).
 4. Select the size of the server you want, then click "Review and Launch" at the bottom.
 5. Click "Launch" at the bottom right of the screen.
-6. On the modal that pops up next, choose a key pair that you will use to ssh into the machine. If you do not have a key pair created, create a new one and download it to your machine.
+6. On the modal that pops up next, choose to create a new key pair and name it `rank_key_pair`. Make sure to download that file as you need it to ssh into any server.
 7. Click "Launch Instance"
 8. Click the "View Instances" button.
 9. Click on the recently launched instance. This will bring up an accordion on the bottom of the page. Take note of the value of the "Public IP" row.
-10. ssh into the server once it is ready (`ssh -i /path/to/keypair.pem ubuntu@<the public IP address>`)
+10. ssh into the server once it is ready (`ssh -i /path/to/rank_key_pair.pem ubuntu@<the public IP address>`)
 
 
 ##Configuration of your (ubuntu) machine
