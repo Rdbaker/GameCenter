@@ -35,7 +35,7 @@ resource "aws_elb" "rankelb" {
         healthy_threshold = 2
         unhealthy_threshold = 4
         timeout = 3
-        target = "HTTP:80/api/health"
+        target = "HTTP:80/status"
         interval = 30
     }
 
