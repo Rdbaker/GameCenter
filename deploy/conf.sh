@@ -1,3 +1,5 @@
+export RANK_ENV="prod"
+
 export PGPORT="5432"
 export PGDATABASE="rankdb"
 export PGUSER="rankuser"
