@@ -38,7 +38,8 @@
         "sudo rm -rf /opt/rank/rank/static/css/* /opt/rank/rank/static/js/*",
         "cd /opt/rank/skate/; bundle install",
         "cd /opt/rank/skate/; bundle exec middleman build",
-        "cd /opt/rank/; npm install"
+        "cd /opt/rank/; npm install",
+        "sudo npm install coffee-script -g"
       ]
     }
   ]

@@ -1,8 +1,10 @@
+variable "vpcid" {}
+variable "amiid" {}
+variable "hostedzoneid" {}
+
 variable "config" {
     default = {
-        vpc_id = "vpc-b91664dc"
-        key_name = "rdbmjpshared"
-        ami = "ami-17a5b776"
+        key_name = "rank_key_pair"
         app_name = "rank"
     }
 }
@@ -12,7 +14,7 @@ provider "aws" {
 }
 
 resource "aws_launch_configuration" "server-launch-conf" {
-    image_id = "${var.config.ami}"
+    image_id = "${var.amiid}"
     instance_type = "t2.micro"
     security_groups = ["${aws_security_group.allow_http.name}"]
     key_name = "${var.config.key_name}"
@@ -48,8 +50,8 @@ resource "aws_elb" "rankelb" {
 }
 resource "aws_autoscaling_group" "server-group" {
     name = "${var.config.app_name}-server-group"
-    min_size = 2
-    max_size = 10
+    min_size = 1
+    max_size = 5
     health_check_type = "ELB"
     health_check_grace_period = 100
     availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
@@ -106,7 +108,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu-underusage-alarm" {
 }
 
 resource "aws_route53_record" "www" {
-    zone_id = "Z2K9PS3Q3T79U7"
+    zone_id = "${var.hostedzoneid}"
     name = "tmwild.com"
     type = "A"
     alias {

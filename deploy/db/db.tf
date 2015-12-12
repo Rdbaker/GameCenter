@@ -1,3 +1,5 @@
+variable "pgpass" {}
+
 provider "aws" {
     region = "us-west-2"
 }
@@ -30,16 +32,10 @@ resource "aws_db_instance" "rankdb" {
     instance_class = "db.t2.micro"
     name = "rankdb"
     username = "rankuser"
-    password = "rankpassword"
+    password = "${var.pgpass}"
     vpc_security_group_ids = ["${aws_security_group.allow_db.id}"]
 }
 
 output "PGHOST" {
     value = "${aws_db_instance.rankdb.address}"
-}
-output "PGPORT" {
-    value = "${aws_db_instance.rankdb.port}"
-}
-output "PGDATABASE" {
-    value = "${aws_db_instance.rankdb.name}"
 }
