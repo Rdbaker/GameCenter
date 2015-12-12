@@ -18,6 +18,9 @@ resource "aws_launch_configuration" "server-launch-conf" {
     instance_type = "t2.micro"
     security_groups = ["${aws_security_group.allow_http.name}"]
     key_name = "${var.config.key_name}"
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 resource "aws_elb" "rankelb" {
