@@ -31,7 +31,7 @@ EC2 is the AWS service that allows a user to create a virtual server and ssh int
 3. Click the "Select" button for the Ubuntu Amazon Machine Image (AMI).
 4. Select the size of the server you want, then click "Review and Launch" at the bottom.
 5. Click "Launch" at the bottom right of the screen.
-6. On the modal that pops up next, choose to create a new key pair and name it `rank_key_pair`. Make sure to download that file as you need it to ssh into any server.
+6. On the modal that pops up next, choose to create a new key pair and name it `rank_key_pair`. Make sure to download that file to the directory `~/.ssh/` as you need it to ssh into any server.
 7. Click "Launch Instance"
 8. Click the "View Instances" button.
 9. Click on the recently launched instance. This will bring up an accordion on the bottom of the page. Take note of the value of the "Public IP" row.
@@ -265,3 +265,8 @@ to catch up), so we can stop the ubuntu instance to minimize costs. Go to the
 dashboard](https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#Instances:sort=instanceState)
 and find the instance. Select it, and click "Actions" > "Instance State" "Stop".
 You can start it again later if you need to destroy or modify the AWS resources.
+
+##Advanced
+
+If you'd like to destroy these resources or ssh into a server instance, see the
+[advanced usage docs](advanced.md)
