@@ -73,7 +73,7 @@ resource "aws_autoscaling_policy" "scale-up-policy" {
 resource "aws_cloudwatch_metric_alarm" "cpu-overusage-alarm" {
     alarm_name = "${var.config.app_name}-cpu-overusage-alarm"
     comparison_operator = "GreaterThanOrEqualToThreshold"
-    threshold = "85"
+    threshold = "75"
     evaluation_periods = "2"
     metric_name = "CPUUtilization"
     namespace = "AWS/EC2"
@@ -97,7 +97,7 @@ resource "aws_autoscaling_policy" "scale-down-policy" {
 resource "aws_cloudwatch_metric_alarm" "cpu-underusage-alarm" {
     alarm_name = "${var.config.app_name}-cpu-underusage-alarm"
     comparison_operator = "LessThanOrEqualToThreshold"
-    threshold = "55"
+    threshold = "30"
     evaluation_periods = "2"
     metric_name = "CPUUtilization"
     namespace = "AWS/EC2"
