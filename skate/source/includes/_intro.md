@@ -47,8 +47,8 @@ client examples on the right.
 
 Each response will be JSON formatted. The object will contain `data` and `meta`.
 Data will contain the data requested, or information about the action performed.
-Meta is information about the response itself. See the meta section for more
-info. TODO link. All example responses in the rest of this document will show
+Meta is information about the response itself. See the [meta section](#meta) for more
+info. All example responses in the rest of this document will show
 the `data` object and not the full response object.
 
 ##API Key
