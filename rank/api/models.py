@@ -20,7 +20,7 @@ class Score(Base):
     user_id = db.Column(db.Integer, index=True, nullable=False)
     score = db.Column(db.Integer, nullable=False)
     tag = db.Column(db.String, index=True)
-    created_at = db.Column(db.DateTime, nullable=False, default=arrow.utcnow().datetime)
+    created_at = db.Column(db.DateTime, nullable=False, default=lambda x: arrow.utcnow().datetime)
 
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"))
     game = relationship("Game", backref=backref("scores"), cascade="delete-orphan, delete", single_parent=True)
